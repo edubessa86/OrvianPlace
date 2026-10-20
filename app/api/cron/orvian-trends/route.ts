@@ -63,7 +63,9 @@ export async function GET(request: Request) {
 
   try {
     const sources = await collectSources();
-    const today = new Date().toISOString().slice(0, 10);
+    const now = new Date();
+    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
+    const publishedAt = now.toISOString();
     const model = process.env.ORVIAN_TRENDS_MODEL || "gemini-2.5-flash";
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: "POST",
@@ -92,11 +94,12 @@ export async function GET(request: Request) {
       ...draft,
       slug,
       source_urls: sources.map(({ title, url }) => ({ title, url })),
-      status: "draft",
-      featured: false
-    }).select("id,slug,title,status,created_at").single();
+      status: "published",
+      featured: false,
+      published_at: publishedAt
+    }).select("id,slug,title,status,created_at,published_at").single();
     if (error) throw new Error(error.message);
-    return NextResponse.json({ ok: true, message: "Rascunho editorial criado para revisão; nada foi publicado nas redes sociais.", post: data, sources_count: sources.length });
+    return NextResponse.json({ ok: true, message: "Artigo publicado automaticamente no blog da Orvian.", post: data, sources_count: sources.length });
   } catch (error) {
     return NextResponse.json({ error: "Não foi possível preparar o rascunho.", detail: error instanceof Error ? error.message : "Erro inesperado" }, { status: 500 });
   }

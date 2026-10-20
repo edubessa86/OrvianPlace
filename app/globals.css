@@ -341,3 +341,22 @@ html,body{background:#08060d;color:#f7f3ff}
  .store-header .store-nav.open .store-inline-social svg{width:16px!important;height:16px!important}
  .store-footer .store-footer-links{justify-content:flex-start!important;flex-wrap:wrap!important}
 }
+
+
+/* Orvian Trends — homepage editorial strip */
+.store-trends{padding:clamp(55px,8vw,100px) clamp(20px,7vw,100px);background:#f7f5f2;color:#19151f}
+.store-trends-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.store-trends-card{background:#fff;border:1px solid #e9e1ec;min-width:0}
+.store-trends-art{height:145px;padding:16px;display:flex;align-items:start;justify-content:space-between;background:linear-gradient(135deg,#e4d5ef,#f7eaf1 65%,#c7a1e7)}
+.store-trends-art span{font-size:10px;text-transform:uppercase;letter-spacing:.12em}
+.store-trends-art b{font-size:54px;color:#8538c9;line-height:.85}
+.store-trends-copy{padding:22px}
+.store-trends-copy small{font-size:11px;color:#817787}
+.store-trends-copy h3{font-size:21px;line-height:1.2;margin:12px 0}
+.store-trends-copy p{font-size:13px;line-height:1.7;color:#706775}
+.store-trends-copy a,.store-trends-all{font-size:12px;font-weight:700;color:#762cb7;text-decoration:none}
+.store-trends-placeholder{display:flex;align-items:center;gap:20px;background:white;border:1px solid #e9e1ec;padding:24px}
+.store-trends-placeholder>span{font-size:48px;font-weight:900;color:#8b35ed}
+.store-trends-placeholder strong{font-size:18px}.store-trends-placeholder p{color:#706775;font-size:13px}
+.store-trends-all{display:inline-flex;gap:24px;margin-top:28px;padding:14px 18px;border:1px solid #bca1ce}
+@media(max-width:760px){.store-trends-grid{grid-template-columns:1fr}.store-trends-art{height:110px}.store-trends-copy{padding:18px}}

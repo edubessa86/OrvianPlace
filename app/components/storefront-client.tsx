@@ -63,11 +63,21 @@ export default function StorefrontClient() {
       </section>
 
       <section className="store-newsletter" id="novidades">
-        <div><p className="store-eyebrow">SEJA A PRIMEIRA A SABER</p><h2>O próximo movimento<br /><em>começa com você.</em></h2><p>Estamos preparando tudo com cuidado. Acompanhe a Orvian para saber quando a coleção real chegar.</p><a className="store-button store-button-light" href="https://www.instagram.com/orvianoficial/" target="_blank" rel="noreferrer">Acompanhe no Instagram <span>↗</span></a></div>
+        <div><p className="store-eyebrow">SEJA A PRIMEIRA A SABER</p><h2>O próximo movimento<br /><em>começa com você.</em></h2><p>Estamos preparando tudo com cuidado. Acompanhe a Orvian para saber quando a coleção real chegar.</p><a className="store-button store-button-light" href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Acompanhe no Instagram <span>↗</span></a></div>
         <div className="store-newsletter-mark">O<span>®</span></div>
       </section>
 
-      <footer className="store-footer"><a className="store-logo store-logo-footer" href="#"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>VISTA SUA MELHOR VERSÃO</small></a><p>Moda fitness feminina, no seu ritmo.</p><div><a href="https://www.instagram.com/orvianoficial/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="#essencia">Nossa essência</a></div><small>© {new Date().getFullYear()} ORVIAN. Todos os direitos reservados. <a href="/painel">Acesso administrativo</a></small></footer>
+      <section className="store-social-bar" aria-label="Redes sociais oficiais da Orvian">
+        <div className="store-social-intro"><span className="store-social-kicker">CONECTE-SE À ORVIAN</span><strong>Acompanhe nossos próximos movimentos.</strong></div>
+        <div className="store-social-links">
+          <a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer" aria-label="Instagram da Orvian"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" className="social-fill"/></svg><span>Instagram</span></a>
+          <a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer" aria-label="Facebook da Orvian"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 21v-8h3l.5-4H14V7c0-1.2.4-2 2-2h2V1.4C17.3 1.2 16.3 1 15 1c-3.4 0-5.5 2-5.5 5.7V9H6v4h3.5v8z"/></svg><span>Facebook</span></a>
+          <a href="https://www.youtube.com/@UseOrvian" target="_blank" rel="noreferrer" aria-label="YouTube da Orvian"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6z"/></svg><span>YouTube</span></a>
+          <a href="mailto:useorvian@gmail.com" aria-label="Enviar e-mail para Orvian"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 7 9-7"/></svg><span>E-mail</span></a>
+        </div>
+      </section>
+
+      <footer className="store-footer"><a className="store-logo store-logo-footer" href="#"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>VISTA SUA MELHOR VERSÃO</small></a><p>Moda fitness feminina, no seu ritmo.</p><div><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="#essencia">Nossa essência</a></div><small>© {new Date().getFullYear()} ORVIAN. Todos os direitos reservados. <a href="/painel">Acesso administrativo</a></small></footer>
     </main>
   );
 }

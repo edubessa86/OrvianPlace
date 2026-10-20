@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Boxes, Plus, Search, Pencil, Trash2, X, Save, Image as ImageIcon, Layers } from "lucide-react";
+import { Boxes, Plus, Search, Pencil, Trash2, X, Save, Image as ImageIcon, Layers, Download } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type Supplier = { id: string; name: string; active: boolean };
@@ -149,11 +149,24 @@ export default function CatalogModule() {
     else if (selected) await openVariants(selected);
   };
 
+  const exportCatalog = () => {
+    const header = ["nome","sku","categoria","marca","descricao","custo","preco_sugerido","estoque","disponibilidade","imagem_url","fornecedor"];
+    const lines = products.map(p => [
+      p.name, p.supplier_sku || "", p.category, p.brand || "", p.description || "",
+      Number(p.cost_price).toFixed(2), Number(p.suggested_price).toFixed(2),
+      p.stock_quantity == null ? "" : p.stock_quantity, p.availability_status, p.image_url || "", supplierName(p.supplier_id)
+    ].map(value => '"' + String(value).replace(/"/g, '""') + '"').join(";"));
+    const blob = new Blob(["\\ufeff" + [header.join(";"), ...lines].join("\\r\\n")], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a"); link.href = url; link.download = "orvianplace-catalogo.csv"; link.click();
+    URL.revokeObjectURL(url);
+  };
+
   const filtered = products.filter(p => [p.name, p.category, p.brand || "", p.supplier_sku || ""].join(" ").toLowerCase().includes(search.toLowerCase()));
   const supplierName = (id: string | null) => suppliers.find(s => s.id === id)?.name || "Sem fornecedor";
 
   return <section>
-    <div className="page-heading"><div><div className="eyebrow">CADASTRO CENTRAL</div><h1>Catálogo de produtos</h1><p>Edite dados, imagens, estoque e variantes. As alterações são salvas no Supabase.</p></div><button className="primary-button" onClick={openNew}><Plus size={16}/> Novo produto</button></div>
+    <div className="page-heading"><div><div className="eyebrow">CADASTRO CENTRAL</div><h1>Catálogo de produtos</h1><p>Edite dados, imagens, estoque e variantes. As alterações são salvas no Supabase.</p></div><div className="export-actions"><button className="secondary-button" onClick={exportCatalog}><Download size={14}/> Exportar CSV</button><button className="primary-button" onClick={openNew}><Plus size={16}/> Novo produto</button></div></div>
     {message && <div className="notice"><span>{message}</span><button onClick={() => setMessage("")} aria-label="Fechar"><X size={16}/></button></div>}
     <div className="metrics-grid">
       <div className="metric-card"><div className="metric-top"><span className="metric-icon"><Boxes size={18}/></span></div><p>Produtos cadastrados</p><strong className="metric-value">{products.length}</strong><small>Registros persistidos</small></div>

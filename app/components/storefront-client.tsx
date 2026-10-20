@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import HomeTrends from "@/app/components/home-trends";
 
 const products = [
   { name: "Legging Sculpt", category: "Leggings", price: "R$ 149,90", tone: "look-one", tag: "PEÇA-CONCEITO" },
@@ -20,6 +21,7 @@ export default function StorefrontClient() {
         <nav className={menuOpen ? "store-nav open" : "store-nav"}>
           <a href="#colecao" onClick={() => setMenuOpen(false)}>Coleção conceito</a>
           <a href="#essencia" onClick={() => setMenuOpen(false)}>Nossa essência</a>
+          <a href="#orvian-trends" onClick={() => setMenuOpen(false)}>Orvian Trends</a>
           <a href="#novidades" onClick={() => setMenuOpen(false)}>Novidades</a>
           <span className="store-inline-social" aria-label="Redes sociais">
             <a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 21v-8h3l.5-4H14V7c0-1.2.4-2 2-2h2V1.4C17.3 1.2 16.3 1 15 1c-3.4 0-5.5 2-5.5 5.7V9H6v4h3.5v8z"/></svg></a>
@@ -67,6 +69,8 @@ export default function StorefrontClient() {
           </article>)}
         </div>
       </section>
+
+      <HomeTrends />
 
       <section className="store-newsletter" id="novidades">
         <div><p className="store-eyebrow">SEJA A PRIMEIRA A SABER</p><h2>O próximo movimento<br /><em>começa com você.</em></h2><p>Estamos preparando tudo com cuidado. Acompanhe a Orvian para saber quando a coleção real chegar.</p><a className="store-button store-button-light" href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Acompanhe no Instagram <span>↗</span></a></div>

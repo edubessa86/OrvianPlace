@@ -36,3 +36,74 @@
 .supplier-modal .supplier-checkbox input{width:15px;height:15px;accent-color:var(--green)}
 .supplier-summary{margin-top:4px}
 @media(max-width:760px){.supplier-actions{flex-direction:column;align-items:stretch}.supplier-actions .secondary-button{width:100%}.supplier-modal{padding:19px}}
+
+
+/* OrvianPlace feature modules */
+.catalog-modal{width:min(100%,720px)}
+.catalog-modal textarea{width:100%;border:1px solid #dfe4de;border-radius:7px;padding:11px;font:inherit;font-size:11px;resize:vertical;outline-color:#829c88}
+.catalog-image{width:38px;height:42px;object-fit:cover;border-radius:6px;border:1px solid var(--line);background:#f5f6f2}
+.image-upload-control input[type=file]{font-size:10px;padding:9px}
+.image-preview{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:9px;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:10px}
+.image-preview img{width:55px;height:65px;object-fit:cover;border-radius:6px}
+.variant-list{margin-top:16px;border-top:1px solid var(--line)}
+.variant-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #f0f1ef}
+.variant-row strong,.variant-row small{display:block;font-size:11px}
+.variant-row small{font-size:9px;color:var(--muted);margin-top:4px}
+.pricing-layout{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(340px,1.1fr);gap:18px;align-items:start}
+.pricing-config,.pricing-results>.catalog-panel{min-width:0}
+.pricing-form{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.pricing-form label{display:flex;flex-direction:column;gap:7px;font-size:10px;font-weight:700;color:#555e56}
+.pricing-form input,.pricing-form select,.import-form select{width:100%;border:1px solid #dfe4de;border-radius:7px;padding:10px;font-size:11px;background:#fff;color:var(--ink);outline-color:#829c88}
+.pricing-form .form-row{gap:10px}
+.number-suffix{display:flex;align-items:center;gap:8px}
+.number-suffix input{min-width:0}
+.number-suffix span{font-size:10px;color:var(--muted);min-width:18px}
+.pricing-form .supplier-checkbox{display:flex;flex-direction:row;align-items:center;gap:8px}
+.pricing-form .supplier-checkbox input{width:15px;height:15px;accent-color:var(--green)}
+.pricing-output{margin:0 20px 18px;padding:20px;border-radius:11px;background:#234635;color:#fff}
+.output-label{display:flex;align-items:center;gap:7px;font-size:9px;letter-spacing:1px;color:#d7e6d9}
+.pricing-output>strong{display:block;font:800 30px Manrope,sans-serif;margin:12px 0 7px}
+.pricing-output>small{display:block;color:#d4e0d6;font-size:10px;line-height:1.5}
+.pricing-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:0 20px 18px}
+.pricing-kpis>div{padding:11px;background:#f7f8f6;border:1px solid var(--line);border-radius:8px;min-width:0}
+.pricing-kpis span{display:block;font-size:9px;line-height:1.5;color:var(--muted)}
+.pricing-kpis strong{display:block;font-size:12px;margin-top:7px;overflow-wrap:anywhere}
+.positive-value{color:#41734c}.negative-value{color:#a25c44}
+.pricing-warning{margin:0 20px 15px;padding:11px;background:#fff5e9;color:#925e2d;border-radius:7px;display:flex;gap:8px;font-size:10px;line-height:1.5}
+.pricing-disclaimer{font-size:9px;line-height:1.6;color:var(--muted);padding:0 20px 18px;margin:0}
+.import-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:18px;align-items:start}
+.import-form{padding:18px 20px}
+.import-form>label:not(.upload-drop){display:flex;flex-direction:column;gap:7px;font-size:10px;font-weight:700;color:#555e56;margin-bottom:15px}
+.upload-drop{min-height:145px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px dashed #b8c7b9;border-radius:10px;background:#f7faf7;color:var(--green);padding:18px;text-align:center;position:relative;margin-bottom:18px}
+.upload-drop strong{font-size:12px;overflow-wrap:anywhere}
+.upload-drop small{font-size:9px;color:var(--muted)}
+.upload-drop input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.import-preview{border:1px solid var(--line);border-radius:9px;overflow:hidden;margin:15px 0}
+.import-preview .panel-heading{padding:13px}
+.import-preview .panel-heading h2{font-size:12px}
+.import-preview th,.import-preview td{padding:9px 10px;font-size:9px}
+.import-errors{padding:12px;border:1px solid #f0dfc8;background:#fff9f1;border-radius:8px;margin:14px 0;color:#8a6235;display:flex;flex-direction:column;gap:7px}
+.import-errors strong{display:flex;align-items:center;gap:6px;font-size:10px}
+.import-errors small{font-size:9px;line-height:1.5}
+.import-hint{padding:0 13px 13px;color:var(--muted);font-size:9px}
+.pdf-text{margin:14px 0;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:10px}
+.pdf-text summary{cursor:pointer;font-weight:700}
+.pdf-text pre{white-space:pre-wrap;max-height:260px;overflow:auto;font-size:9px;line-height:1.5;color:#555}
+.import-help{padding:0 20px 20px;font-size:10px;line-height:1.7;color:#646d65}
+.import-help strong{display:block;margin:12px 0 5px;color:#303831}
+.import-help p{margin:0 0 10px}
+.import-help code{background:#f0f3ef;padding:3px 5px;border-radius:4px;font-size:9px}
+.import-help ul{padding-left:18px;margin:5px 0 14px}
+.import-history{margin-top:20px}
+.import-history th,.import-history td{font-size:9px}
+.analytics-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:18px;align-items:start}
+.category-bars{padding:6px 20px 20px}
+.category-bar-row{margin:12px 0}
+.category-bar-row>div:first-child{display:flex;justify-content:space-between;gap:10px;font-size:10px;margin-bottom:7px}
+.category-bar-row strong{color:var(--green)}
+.category-bar-track{height:7px;border-radius:10px;background:#eef1ed;overflow:hidden}
+.category-bar-track span{display:block;height:100%;background:#6e9276;border-radius:10px}
+.export-actions{display:flex;gap:8px;flex-wrap:wrap}
+.analytics-note{margin-top:18px}
+@media(max-width:1050px){.pricing-layout,.import-grid,.analytics-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.pricing-kpis{grid-template-columns:1fr}.export-actions{width:100%}.export-actions button{flex:1}.catalog-modal{padding:18px}.import-form{padding:14px}.variant-row{align-items:flex-start}.variant-row .secondary-button{white-space:nowrap}}

@@ -52,6 +52,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [activeSupplierCount, setActiveSupplierCount] = useState(0);
   const [savingProduct, setSavingProduct] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [notice, setNotice] = useState("");
@@ -73,8 +74,18 @@ export default function Home() {
     setLoadingProducts(false);
   };
 
+  const loadSupplierCount = async () => {
+    const supabase = createClient();
+    const { count, error } = await supabase
+      .from("suppliers")
+      .select("id", { count: "exact", head: true })
+      .eq("active", true);
+    if (!error) setActiveSupplierCount(count ?? 0);
+  };
+
   useEffect(() => {
     void loadProducts();
+    void loadSupplierCount();
   }, []);
 
   const filtered = products.filter(p => [p.name, p.supplier, p.category].join(" ").toLowerCase().includes(query.toLowerCase()));
@@ -166,6 +177,7 @@ export default function Home() {
         <header className="topbar"><div className="breadcrumbs">OrvianPlace <span>/</span> <strong>{active}</strong></div><div className="top-actions"><span className="env-pill"><span/> AMBIENTE DE DESENVOLVIMENTO</span><button className="icon-button" aria-label="Ajuda" onClick={() => setNotice("Este é o primeiro protótipo. Login seguro e banco de dados ainda serão conectados.")}><CircleHelp size={18}/></button><form action="/auth/signout" method="post"><button className="signout-button" type="submit"><LogOut size={15}/> Sair</button></form><div className="top-avatar">A</div></div></header>
         <div className="content">
           {notice && <div className="notice"><Activity size={17}/><span>{notice}</span><button aria-label="Fechar aviso" onClick={() => setNotice("")}><X size={16}/></button></div>}
+          {active === "Fornecedores" ? <SuppliersModule onChanged={loadSupplierCount} /> : <>
           <div className="page-heading"><div><div className="eyebrow">TERÇA-FEIRA · CENTRAL DE OPERAÇÕES</div><h1>{active === "Visão geral" ? "Sua operação, em um só lugar." : active}</h1><p>Encontre oportunidades, organize seu catálogo e acompanhe a rentabilidade da ORVIAN.</p></div><button className="primary-button" onClick={() => setShowAdd(true)}><Plus size={17}/> Adicionar produto</button></div>
 
           <section className="welcome-banner"><div className="banner-content"><div className="banner-tag"><TrendingUp size={14}/> ORVIAN COMMERCE INTELLIGENCE</div><h2>Boas escolhas começam<br/>com dados melhores.</h2><p>Seu centro de inteligência para garimpar moda fitness, comparar fornecedores nacionais e tomar decisões com margem em mente.</p><button onClick={() => { setActive("Garimpo de produtos"); setNotice("O próximo módulo será o garimpo com importação de catálogos de fornecedores."); }}>Explorar garimpo <span>↗</span></button></div><div className="banner-art" aria-hidden="true"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="art-core"><ShoppingBag size={42} strokeWidth={1.2}/></div><div className="float-card float-card-one"><span className="float-icon"><Wallet size={16}/></span><div><small>MARGEM POTENCIAL</small><strong>+32,8%</strong></div><ArrowUpRight size={17}/></div><div className="float-card float-card-two"><span className="float-icon"><Boxes size={16}/></span><div><small>CATÁLOGO</small><strong>Novas oportunidades</strong></div></div><div className="art-dot dot-one"/><div className="art-dot dot-two"/></div></section>
@@ -174,7 +186,7 @@ export default function Home() {
           <section className="metrics-grid">
             <Metric icon={<PackageSearch size={18}/>} label="Produtos no catálogo" value={String(products.length).padStart(2,"0")} foot={loadingProducts ? "Carregando banco..." : "Produtos cadastrados"} trend="Catálogo" />
             <Metric icon={<Wallet size={18}/>} label="Margem média estimada" value={products.length ? (products.reduce((sum,p)=>sum+p.margin,0)/products.length).toFixed(1).replace(".",",")+"%" : "—"} foot="Cálculo simplificado" trend="Estimativa" />
-            <Metric icon={<Truck size={18}/>} label="Fornecedores ativos" value="00" foot="Nenhum cadastrado" trend="A configurar" />
+            <Metric icon={<Truck size={18}/>} label="Fornecedores ativos" value={String(activeSupplierCount).padStart(2,"0")} foot="Ativos no cadastro" trend="Banco de dados" />
             <Metric icon={<ChartNoAxesCombined size={18}/>} label="Oportunidades analisadas" value={String(products.length).padStart(2,"0")} foot="Produtos cadastrados" trend="Catálogo" />
           </section>
 
@@ -182,6 +194,8 @@ export default function Home() {
 
           <section className="next-steps"><div className="next-icon"><CloudUpload size={20}/></div><div><strong>Próxima etapa: seu catálogo real</strong><p>O catálogo já consulta o banco de dados. A próxima etapa é gerenciar fornecedores e importar arquivos CSV/XLSX.</p></div><button onClick={() => setNotice("Planejamento: autenticação admin → banco de dados → cadastro de fornecedores → importação CSV/XLSX.")}>Acompanhar etapas <ArrowDownRight size={15}/></button></section>
           <footer className="app-footer"><span>ORVIANPLACE <span className="footer-dot">•</span> VERSÃO 0.1.0</span><span>Feito para decisões melhores.</span></footer>
+        </div>
+          </>}
         </div>
       </section>
 
@@ -192,4 +206,217 @@ export default function Home() {
 
 function Metric({ icon, label, value, foot, trend }: { icon: React.ReactNode; label: string; value: string; foot: string; trend: string }) {
   return <article className="metric-card"><div className="metric-top"><div className="metric-icon">{icon}</div><span className="metric-trend">{trend}</span></div><p>{label}</p><strong className="metric-value">{value}</strong><small>{foot}</small></article>;
+}
+
+type Supplier = {
+  id: string;
+  name: string;
+  website: string | null;
+  contact_name: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  state: string | null;
+  city: string | null;
+  shipping_notes: string | null;
+  dropshipping_available: boolean;
+  catalog_format: "manual" | "csv" | "xlsx" | "xml" | "pdf";
+  notes: string | null;
+  active: boolean;
+};
+
+const emptySupplierForm = {
+  name: "",
+  website: "",
+  contact_name: "",
+  contact_email: "",
+  contact_phone: "",
+  city: "",
+  state: "",
+  shipping_notes: "",
+  dropshipping_available: false,
+  catalog_format: "manual" as Supplier["catalog_format"],
+  notes: "",
+};
+
+function SuppliersModule({ onChanged }: { onChanged: () => Promise<void> }) {
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<Supplier | null>(null);
+  const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
+  const [form, setForm] = useState(emptySupplierForm);
+
+  const loadSuppliers = async () => {
+    setLoading(true);
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("suppliers")
+      .select("id,name,website,contact_name,contact_email,contact_phone,state,city,shipping_notes,dropshipping_available,catalog_format,notes,active")
+      .order("name", { ascending: true });
+    if (error) {
+      setMessage("Não foi possível carregar os fornecedores: " + error.message);
+      setSuppliers([]);
+    } else {
+      setSuppliers((data ?? []) as Supplier[]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    void loadSuppliers();
+  }, []);
+
+  const openNew = () => {
+    setEditing(null);
+    setForm(emptySupplierForm);
+    setShowForm(true);
+    setMessage("");
+  };
+
+  const openEdit = (supplier: Supplier) => {
+    setEditing(supplier);
+    setForm({
+      name: supplier.name ?? "",
+      website: supplier.website ?? "",
+      contact_name: supplier.contact_name ?? "",
+      contact_email: supplier.contact_email ?? "",
+      contact_phone: supplier.contact_phone ?? "",
+      city: supplier.city ?? "",
+      state: supplier.state ?? "",
+      shipping_notes: supplier.shipping_notes ?? "",
+      dropshipping_available: supplier.dropshipping_available ?? false,
+      catalog_format: supplier.catalog_format ?? "manual",
+      notes: supplier.notes ?? "",
+    });
+    setShowForm(true);
+    setMessage("");
+  };
+
+  const saveSupplier = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!form.name.trim()) {
+      setMessage("Informe o nome do fornecedor.");
+      return;
+    }
+    setSaving(true);
+    const supabase = createClient();
+    const payload = {
+      name: form.name.trim(),
+      website: form.website.trim() || null,
+      contact_name: form.contact_name.trim() || null,
+      contact_email: form.contact_email.trim() || null,
+      contact_phone: form.contact_phone.trim() || null,
+      city: form.city.trim() || null,
+      state: form.state.trim() || null,
+      shipping_notes: form.shipping_notes.trim() || null,
+      dropshipping_available: form.dropshipping_available,
+      catalog_format: form.catalog_format,
+      notes: form.notes.trim() || null,
+    };
+
+    const result = editing
+      ? await supabase.from("suppliers").update(payload).eq("id", editing.id)
+      : await supabase.from("suppliers").insert(payload);
+
+    if (result.error) {
+      setMessage("Não foi possível salvar o fornecedor: " + result.error.message);
+      setSaving(false);
+      return;
+    }
+
+    setMessage(editing ? "Fornecedor atualizado com sucesso." : "Fornecedor cadastrado com sucesso.");
+    setShowForm(false);
+    setSaving(false);
+    await loadSuppliers();
+    await onChanged();
+  };
+
+  const toggleActive = async (supplier: Supplier) => {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("suppliers")
+      .update({ active: !supplier.active })
+      .eq("id", supplier.id);
+    if (error) {
+      setMessage("Não foi possível alterar o status: " + error.message);
+      return;
+    }
+    setMessage(supplier.active ? "Fornecedor inativado. O histórico foi preservado." : "Fornecedor reativado.");
+    await loadSuppliers();
+    await onChanged();
+  };
+
+  const filtered = suppliers.filter((supplier) =>
+    [supplier.name, supplier.contact_name ?? "", supplier.city ?? "", supplier.state ?? ""]
+      .join(" ").toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <section>
+      <div className="page-heading">
+        <div>
+          <div className="eyebrow">BASE COMERCIAL ORVIAN</div>
+          <h1>Fornecedores</h1>
+          <p>Centralize contatos, condições de envio e formatos de catálogo dos seus parceiros.</p>
+        </div>
+        <button className="primary-button" onClick={openNew}><Plus size={17}/> Novo fornecedor</button>
+      </div>
+
+      {message && <div className="notice"><Activity size={17}/><span>{message}</span><button aria-label="Fechar aviso" onClick={() => setMessage("")}><X size={16}/></button></div>}
+
+      <div className="metrics-grid supplier-summary">
+        <Metric icon={<Truck size={18}/>} label="Total de fornecedores" value={String(suppliers.length).padStart(2, "0")} foot="Registros no banco" trend="Cadastro"/>
+        <Metric icon={<ShieldCheck size={18}/>} label="Fornecedores ativos" value={String(suppliers.filter(s => s.active).length).padStart(2, "0")} foot="Disponíveis para operação" trend="Ativos"/>
+        <Metric icon={<CloudUpload size={18}/>} label="Com dropshipping" value={String(suppliers.filter(s => s.dropshipping_available).length).padStart(2, "0")} foot="Informação declarada" trend="Logística"/>
+        <Metric icon={<Boxes size={18}/>} label="Catálogos estruturados" value={String(suppliers.filter(s => s.catalog_format !== "manual").length).padStart(2, "0")} foot="CSV, Excel, XML ou PDF" trend="Importação"/>
+      </div>
+
+      <section className="catalog-panel">
+        <div className="panel-heading">
+          <div><h2>Base de fornecedores</h2><p>Edite os dados ou inative um fornecedor sem apagar seu histórico.</p></div>
+        </div>
+        <div className="table-toolbar">
+          <label className="search-field"><Search size={16}/><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar nome, contato ou cidade..."/></label>
+          <button className="filter-button" onClick={() => { setSearch(""); setMessage(""); }}><X size={14}/> Limpar busca</button>
+        </div>
+        <div className="table-wrap">
+          {loading ? <div className="empty-state">Carregando fornecedores...</div> : filtered.length === 0 ? <div className="empty-state">Nenhum fornecedor encontrado. Clique em “Novo fornecedor” para cadastrar o primeiro.</div> : (
+            <table>
+              <thead><tr><th>FORNECEDOR</th><th>CONTATO</th><th>LOCALIZAÇÃO</th><th>CATÁLOGO</th><th>DROPSHIPPING</th><th>STATUS</th><th>AÇÕES</th></tr></thead>
+              <tbody>{filtered.map(supplier => (
+                <tr key={supplier.id}>
+                  <td><div className="product-cell"><div className="product-thumb"><Truck size={18}/></div><div><strong>{supplier.name}</strong><small>{supplier.website || "Site não informado"}</small></div></div></td>
+                  <td>{supplier.contact_name || "—"}<small className="supplier-subline">{supplier.contact_email || supplier.contact_phone || "Contato não informado"}</small></td>
+                  <td>{[supplier.city, supplier.state].filter(Boolean).join(" / ") || "—"}</td>
+                  <td>{({manual:"Manual",csv:"CSV",xlsx:"Excel (XLSX)",xml:"XML",pdf:"PDF"} as Record<string,string>)[supplier.catalog_format] || "Manual"}</td>
+                  <td>{supplier.dropshipping_available ? "Sim" : "Não informado"}</td>
+                  <td><span className={"status " + (supplier.active ? "status-review" : "status-attention")}>{supplier.active ? "Ativo" : "Inativo"}</span></td>
+                  <td><div className="supplier-actions"><button className="secondary-button" onClick={() => openEdit(supplier)}>Editar</button><button className="secondary-button" onClick={() => void toggleActive(supplier)}>{supplier.active ? "Inativar" : "Reativar"}</button></div></td>
+                </tr>
+              ))}</tbody>
+            </table>
+          )}
+        </div>
+        <div className="panel-footer"><span>Exibindo {filtered.length} de {suppliers.length} fornecedores</span><span className="footer-note"><ShieldCheck size={14}/> Dados salvos no Supabase</span></div>
+      </section>
+
+      {showForm && <div className="modal-backdrop" onClick={() => !saving && setShowForm(false)}><section className="modal supplier-modal" onClick={event => event.stopPropagation()}>
+        <div className="modal-heading"><div><div className="eyebrow">BASE COMERCIAL ORVIAN</div><h2>{editing ? "Editar fornecedor" : "Novo fornecedor"}</h2><p>Cadastre as informações comerciais disponíveis.</p></div><button className="icon-button" onClick={() => setShowForm(false)} aria-label="Fechar" disabled={saving}><X size={18}/></button></div>
+        <form onSubmit={saveSupplier}>
+          <label>Nome do fornecedor *<input required value={form.name} onChange={e => setForm({...form,name:e.target.value})} placeholder="Ex.: Fabricante Moda Fitness"/></label>
+          <label>Site<input type="url" value={form.website} onChange={e => setForm({...form,website:e.target.value})} placeholder="https://..."/></label>
+          <div className="form-row"><label>Nome do contato<input value={form.contact_name} onChange={e => setForm({...form,contact_name:e.target.value})} placeholder="Representante comercial"/></label><label>Telefone / WhatsApp<input value={form.contact_phone} onChange={e => setForm({...form,contact_phone:e.target.value})} placeholder="(00) 00000-0000"/></label></div>
+          <label>E-mail comercial<input type="email" value={form.contact_email} onChange={e => setForm({...form,contact_email:e.target.value})} placeholder="vendas@fornecedor.com.br"/></label>
+          <div className="form-row"><label>Cidade<input value={form.city} onChange={e => setForm({...form,city:e.target.value})} placeholder="Cidade"/></label><label>Estado (UF)<input maxLength={2} value={form.state} onChange={e => setForm({...form,state:e.target.value.toUpperCase()})} placeholder="RJ"/></label></div>
+          <label>Formato do catálogo<select value={form.catalog_format} onChange={e => setForm({...form,catalog_format:e.target.value as Supplier["catalog_format"]})}><option value="manual">Manual / ainda não informado</option><option value="pdf">PDF</option><option value="xlsx">Excel (XLSX)</option><option value="csv">CSV</option><option value="xml">XML</option></select></label>
+          <label>Condições de envio e pedido mínimo<textarea rows={2} value={form.shipping_notes} onChange={e => setForm({...form,shipping_notes:e.target.value})} placeholder="Prazo, frete, pedido mínimo, pagamento..."/></label>
+          <label>Observações comerciais<textarea rows={2} value={form.notes} onChange={e => setForm({...form,notes:e.target.value})} placeholder="Categorias, políticas de troca, preços, etc."/></label>
+          <label className="supplier-checkbox"><input type="checkbox" checked={form.dropshipping_available} onChange={e => setForm({...form,dropshipping_available:e.target.checked})}/> Trabalha com dropshipping</label>
+          <div className="modal-actions"><button type="button" className="secondary-button" onClick={() => setShowForm(false)} disabled={saving}>Cancelar</button><button type="submit" className="primary-button" disabled={saving}><Plus size={16}/>{saving ? "Salvando..." : editing ? "Salvar alterações" : "Cadastrar fornecedor"}</button></div>
+        </form>
+      </section></div>}
+    </section>
+  );
 }

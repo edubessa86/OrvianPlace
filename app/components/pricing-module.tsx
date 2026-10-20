@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Calculator, Save, Tags, TrendingUp, AlertTriangle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { logAudit } from "@/lib/audit";
 
 type Channel = "mercado_livre" | "shopee" | "amazon";
 type Rule = { id?: string; channel: Channel; commission_percent: number | string; fixed_fee: number | string; tax_percent: number | string; shipping_cost: number | string; target_margin_percent: number | string; active: boolean };
@@ -75,7 +76,7 @@ export default function PricingModule({ mode = "pricing" }: { mode?: "pricing" |
     };
     const { error } = await createClient().from("marketplace_rules").upsert(payload, { onConflict: "channel" });
     if (error) setMessage("Não foi possível salvar as regras: " + error.message);
-    else setMessage("Regras de " + labels[channel] + " salvas no Supabase.");
+    else { await logAudit("marketplace_rule.updated", "marketplace_rule", channel, payload); setMessage("Regras de " + labels[channel] + " salvas no Supabase."); }
     setSaving(false); await load();
   };
   const field = (label: string, key: "commission_percent" | "fixed_fee" | "tax_percent" | "shipping_cost" | "target_margin_percent", suffix: string) => <label>{label}<div className="number-suffix"><input type="number" min="0" max={suffix === "%" ? "100" : undefined} step="0.01" value={String(rule[key])} onChange={e => updateRule(key, e.target.value)}/><span>{suffix}</span></div></label>;

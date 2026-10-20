@@ -298,3 +298,46 @@ html,body{background:#08060d;color:#f7f3ff}
  .store-footer-links{justify-content:flex-start;flex-wrap:wrap;gap:15px}
  .store-footer-social{gap:12px}
 }
+
+
+/* Visibility and sizing fix: larger brand mark + always-visible social icons */
+.store-header{min-height:112px!important;height:auto!important;padding-top:10px!important;padding-bottom:10px!important;gap:clamp(12px,2vw,30px)!important}
+.store-header .store-logo{flex:0 0 116px!important;width:116px!important;min-width:116px!important}
+.store-header .store-logo img{display:block!important;width:104px!important;height:104px!important;min-width:104px!important;max-width:104px!important;object-fit:contain!important;visibility:visible!important;opacity:1!important}
+.store-header .store-logo small{display:block!important;font-size:6px!important;letter-spacing:1.3px!important}
+.store-header .store-nav{display:flex!important;flex:1 1 auto!important;min-width:0!important;justify-content:center!important;gap:clamp(10px,1.7vw,25px)!important;visibility:visible!important;opacity:1!important}
+.store-header .store-nav>a{display:inline-flex!important;white-space:nowrap!important;font-size:12px!important}
+.store-header .store-inline-social{display:inline-flex!important;flex:0 0 auto!important;align-items:center!important;gap:8px!important;margin-left:4px!important;visibility:visible!important;opacity:1!important}
+.store-header .store-inline-social a{display:inline-flex!important;flex:0 0 27px!important;width:27px!important;height:27px!important;min-width:27px!important;min-height:27px!important;align-items:center!important;justify-content:center!important;padding:0!important;border:1px solid #61327a!important;border-radius:50%!important;background:#180b23!important;color:#e7b7ff!important;visibility:visible!important;opacity:1!important}
+.store-header .store-inline-social a:hover{border-color:#ed5aff!important;color:#fff!important;background:#351047!important;box-shadow:0 0 12px #bd36ff55!important}
+.store-header .store-inline-social svg{display:block!important;width:14px!important;height:14px!important;visibility:visible!important;opacity:1!important}
+.store-header .store-menu-toggle{display:none!important}
+.store-footer .store-footer-links{display:flex!important;align-items:center!important;gap:16px!important}
+.store-footer .store-footer-social{display:inline-flex!important;visibility:visible!important;opacity:1!important;gap:8px!important}
+.store-footer .store-footer-social a{display:inline-flex!important;flex:0 0 25px!important;width:25px!important;height:25px!important;min-width:25px!important;min-height:25px!important;align-items:center!important;justify-content:center!important;border:1px solid #61327a!important;border-radius:50%!important;background:#180b23!important;color:#e7b7ff!important;padding:0!important}
+.store-footer .store-footer-social svg{display:block!important;width:13px!important;height:13px!important}
+@media(max-width:1100px) and (min-width:641px){
+ .store-header{gap:10px!important}
+ .store-header .store-logo{flex-basis:94px!important;width:94px!important;min-width:94px!important}
+ .store-header .store-logo img{width:88px!important;height:88px!important;min-width:88px!important;max-width:88px!important}
+ .store-header .store-nav{gap:9px!important}
+ .store-header .store-nav>a{font-size:10px!important}
+ .store-header .store-inline-social{gap:4px!important}
+ .store-header .store-inline-social a{flex-basis:23px!important;width:23px!important;height:23px!important;min-width:23px!important}
+ .store-header .store-inline-social svg{width:12px!important;height:12px!important}
+ .store-header .store-header-cta{padding:10px!important;font-size:9px!important}
+}
+@media(max-width:640px){
+ .store-header{min-height:84px!important;height:auto!important;display:flex!important;flex-wrap:nowrap!important;padding:7px 4%!important;gap:6px!important}
+ .store-header .store-logo{flex:0 0 78px!important;width:78px!important;min-width:78px!important}
+ .store-header .store-logo img{width:74px!important;height:74px!important;min-width:74px!important;max-width:74px!important}
+ .store-header .store-logo small{font-size:5px!important;letter-spacing:.8px!important}
+ .store-header .store-menu-toggle{display:block!important;order:3!important;margin:0 0 0 4px!important;padding:5px!important;font-size:22px!important}
+ .store-header .store-header-cta{margin-left:auto!important;order:2!important;white-space:nowrap!important;padding:9px 8px!important;font-size:8px!important}
+ .store-header .store-nav{display:none!important;order:4!important}
+ .store-header .store-nav.open{display:flex!important;position:absolute!important;z-index:50!important;top:100%!important;left:0!important;right:0!important;flex-direction:column!important;align-items:flex-start!important;gap:17px!important;padding:20px 5%!important;background:#0d0814!important;border-bottom:1px solid #382047!important}
+ .store-header .store-nav.open .store-inline-social{display:flex!important;gap:12px!important;margin-top:4px!important}
+ .store-header .store-nav.open .store-inline-social a{width:30px!important;height:30px!important;min-width:30px!important;flex-basis:30px!important}
+ .store-header .store-nav.open .store-inline-social svg{width:16px!important;height:16px!important}
+ .store-footer .store-footer-links{justify-content:flex-start!important;flex-wrap:wrap!important}
+}

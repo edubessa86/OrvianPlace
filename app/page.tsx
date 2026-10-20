@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { logAudit } from "@/lib/audit";
 import CatalogModule from "@/app/components/catalog-module";
 import PricingModule from "@/app/components/pricing-module";
 import ImportModule from "@/app/components/import-module";
@@ -320,8 +321,8 @@ function SuppliersModule({ onChanged }: { onChanged: () => Promise<void> }) {
     };
 
     const result = editing
-      ? await supabase.from("suppliers").update(payload).eq("id", editing.id)
-      : await supabase.from("suppliers").insert(payload);
+      ? await supabase.from("suppliers").update(payload).eq("id", editing.id).select("id").single()
+      : await supabase.from("suppliers").insert(payload).select("id").single();
 
     if (result.error) {
       setMessage("Não foi possível salvar o fornecedor: " + result.error.message);
@@ -329,6 +330,7 @@ function SuppliersModule({ onChanged }: { onChanged: () => Promise<void> }) {
       return;
     }
 
+    await logAudit(editing ? "supplier.updated" : "supplier.created", "supplier", result.data?.id ?? editing?.id ?? null, { name: payload.name, active: true });
     setMessage(editing ? "Fornecedor atualizado com sucesso." : "Fornecedor cadastrado com sucesso.");
     setShowForm(false);
     setSaving(false);
@@ -346,6 +348,7 @@ function SuppliersModule({ onChanged }: { onChanged: () => Promise<void> }) {
       setMessage("Não foi possível alterar o status: " + error.message);
       return;
     }
+    await logAudit(supplier.active ? "supplier.deactivated" : "supplier.reactivated", "supplier", supplier.id, { name: supplier.name });
     setMessage(supplier.active ? "Fornecedor inativado. O histórico foi preservado." : "Fornecedor reativado.");
     await loadSuppliers();
     await onChanged();

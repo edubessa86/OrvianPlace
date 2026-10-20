@@ -5,7 +5,7 @@ import {
   Activity, ArrowDownRight, ArrowUpRight, Boxes, ChartNoAxesCombined,
   ChevronDown, CircleHelp, CloudUpload, ExternalLink, Filter, LayoutDashboard,
   PackageSearch, Plus, Search, Settings2, ShieldCheck, ShoppingBag, Store,
-  Tags, TrendingUp, Truck, Wallet, X
+  Tags, TrendingUp, Truck, Wallet, X, LogOut
 } from "lucide-react";
 
 type Product = {
@@ -64,7 +64,7 @@ export default function Home() {
       </aside>
 
       <section className="main-area">
-        <header className="topbar"><div className="breadcrumbs">OrvianPlace <span>/</span> <strong>{active}</strong></div><div className="top-actions"><span className="env-pill"><span/> AMBIENTE DE DESENVOLVIMENTO</span><button className="icon-button" aria-label="Ajuda" onClick={() => setNotice("Este é o primeiro protótipo. Login seguro e banco de dados ainda serão conectados.")}><CircleHelp size={18}/></button><div className="top-avatar">A</div></div></header>
+        <header className="topbar"><div className="breadcrumbs">OrvianPlace <span>/</span> <strong>{active}</strong></div><div className="top-actions"><span className="env-pill"><span/> AMBIENTE DE DESENVOLVIMENTO</span><button className="icon-button" aria-label="Ajuda" onClick={() => setNotice("Este é o primeiro protótipo. Login seguro e banco de dados ainda serão conectados.")}><CircleHelp size={18}/></button><form action="/auth/signout" method="post"><button className="signout-button" type="submit"><LogOut size={15}/> Sair</button></form><div className="top-avatar">A</div></div></header>
         <div className="content">
           {notice && <div className="notice"><Activity size={17}/><span>{notice}</span><button aria-label="Fechar aviso" onClick={() => setNotice("")}><X size={16}/></button></div>}
           <div className="page-heading"><div><div className="eyebrow">TERÇA-FEIRA · CENTRAL DE OPERAÇÕES</div><h1>{active === "Visão geral" ? "Sua operação, em um só lugar." : active}</h1><p>Encontre oportunidades, organize seu catálogo e acompanhe a rentabilidade da ORVIAN.</p></div><button className="primary-button" onClick={() => setShowAdd(true)}><Plus size={17}/> Adicionar produto</button></div>

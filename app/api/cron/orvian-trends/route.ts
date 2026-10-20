@@ -56,35 +56,32 @@ export async function GET(request: Request) {
   }
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const openAiKey = process.env.OPENAI_API_KEY;
-  if (!supabaseUrl || !serviceKey || !openAiKey) {
-    return NextResponse.json({ error: "Configure NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OPENAI_API_KEY e CRON_SECRET na Vercel." }, { status: 503 });
+  const geminiApiKey = process.env.GEMINI_API_KEY;
+  if (!supabaseUrl || !serviceKey || !geminiApiKey) {
+    return NextResponse.json({ error: "Configure NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, GEMINI_API_KEY e CRON_SECRET na Vercel." }, { status: 503 });
   }
 
   try {
     const sources = await collectSources();
     const today = new Date().toISOString().slice(0, 10);
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const model = process.env.ORVIAN_TRENDS_MODEL || "gemini-2.5-flash";
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: "POST",
-      headers: { authorization: `Bearer ${openAiKey}`, "content-type": "application/json" },
+      headers: { "x-goog-api-key": geminiApiKey, "content-type": "application/json" },
       body: JSON.stringify({
-        model: process.env.ORVIAN_TRENDS_MODEL || "gpt-4o-mini",
-        temperature: 0.7,
-        response_format: { type: "json_object" },
-        messages: [
-          { role: "system", content: editorialPrompt },
-          { role: "user", content: JSON.stringify({ date: today, research: sources, instruction: "Crie um único artigo útil, original e prático. As fontes abaixo são pistas editoriais, não fatos automaticamente verificados. Inclua apenas afirmações sustentadas pelas informações disponíveis." }) }
-        ]
+        systemInstruction: { parts: [{ text: editorialPrompt }] },
+        contents: [{ role: "user", parts: [{ text: JSON.stringify({ date: today, research: sources, instruction: "Crie um único artigo útil, original e prático. As fontes abaixo são pistas editoriais, não fatos automaticamente verificados. Inclua apenas afirmações sustentadas pelas informações disponíveis." }) }] }],
+        generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
       }),
       signal: AbortSignal.timeout(45000)
     });
     if (!response.ok) {
       const detail = await response.text();
-      return NextResponse.json({ error: "Falha ao gerar conteúdo com IA.", detail: detail.slice(0, 600) }, { status: 502 });
+      return NextResponse.json({ error: "Falha ao gerar conteúdo com Gemini.", detail: detail.slice(0, 600) }, { status: 502 });
     }
     const result = await response.json();
-    const raw = result.choices?.[0]?.message?.content;
-    if (!raw) throw new Error("A IA retornou conteúdo vazio.");
+    const raw = result.candidates?.[0]?.content?.parts?.map((part: { text?: string }) => part.text ?? "").join("");
+    if (!raw) throw new Error("O Gemini retornou conteúdo vazio.");
     const draft = JSON.parse(raw) as TrendDraft;
     const slug = (draft.slug || draft.title).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 90) + "-" + today.replace(/-/g, "");
     const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });

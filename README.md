@@ -2,6 +2,10 @@
 
 Sistema online de inteligência comercial e gestão de catálogo para a ORVIAN, com foco inicial em moda fitness feminina e fornecedores nacionais com estoque no Brasil.
 
+## Estado atual
+
+**Versão 0.1.0 — protótipo visual inicial.** O painel responsivo e a tela inicial estão no repositório. A lista e o formulário de produtos funcionam apenas durante a sessão do navegador; ainda não há autenticação, banco de dados nem persistência. Não publicar o protótipo em produção antes de implementar e validar o acesso administrativo.
+
 ## Objetivo
 
 Centralizar fornecedores e produtos, importar catálogos, calcular custos e margem estimada por marketplace e preparar anúncios para aprovação administrativa. A primeira versão não publicará anúncios nem fará pedidos a fornecedores automaticamente.
@@ -45,8 +49,6 @@ Recomendação inicial: manter a loja pública separada do painel administrativo
 
 ## Desenvolvimento
 
-Consulte:
-- [Arquitetura](docs/ARCHITECTURE.md)
-- [Roadmap](docs/ROADMAP.md)
+Consulte [Arquitetura](docs/ARCHITECTURE.md) e [Roadmap](docs/ROADMAP.md).
 
-Nunca coloque dados reais de clientes, credenciais ou tokens em issues, commits ou arquivos versionados.
+Arquivo `.env.example` contém apenas os nomes das variáveis esperadas. Nunca coloque dados reais de clientes, credenciais ou tokens em issues, commits ou arquivos versionados.

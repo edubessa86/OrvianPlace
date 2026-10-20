@@ -2,6 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  // Loja pública: a página inicial deve ser acessível sem autenticação.
+  // As demais rotas continuam protegidas pelo fluxo administrativo abaixo.
+  if (request.nextUrl.pathname === "/") {
+    return NextResponse.next();
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const loginUrl = new URL("/login", request.url);

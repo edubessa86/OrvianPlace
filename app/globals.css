@@ -247,3 +247,16 @@ html,body{background:#08060d;color:#f7f3ff}
 .auth-submit:hover{background:linear-gradient(100deg,#9b2ce8,#df43ff)!important}
 .auth-footnote{color:#9f8aaf!important}
 @media(max-width:640px){.store-logo img{width:132px;height:40px}.store-logo small{font-size:6px!important}.store-logo-footer img{width:145px;height:43px}}
+
+
+/* Logo correction: preserve the original square neon emblem without cropping or stretching */
+.store-logo{align-items:center!important;gap:4px!important}
+.store-logo img{width:64px!important;height:64px!important;max-width:none!important;object-fit:contain!important;object-position:center!important;aspect-ratio:1/1!important;border-radius:0!important;filter:none!important;box-shadow:none!important}
+.store-logo small{text-align:center!important;white-space:nowrap}
+.store-logo-footer{align-items:flex-start!important}
+.store-logo-footer img{width:76px!important;height:76px!important}
+.store-logo-footer small{text-align:left!important}
+@media(max-width:640px){
+  .store-logo img{width:54px!important;height:54px!important}
+  .store-logo-footer img{width:66px!important;height:66px!important}
+}

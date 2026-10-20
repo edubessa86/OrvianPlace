@@ -275,3 +275,26 @@ html,body{background:#08060d;color:#f7f3ff}
 .store-social-links .social-fill{fill:currentColor;stroke:none}
 @media(max-width:1000px){.store-social-bar{align-items:flex-start;flex-direction:column;gap:18px}.store-social-links{width:100%;flex-wrap:wrap}.store-social-links a{flex:1;min-width:125px}}
 @media(max-width:640px){.store-social-bar{padding:25px 5%;gap:16px}.store-social-intro strong{font-size:13px}.store-social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.store-social-links a{min-width:0;padding:12px 10px}.store-social-links a span{font-size:10px}}
+
+
+/* Compact social icons integrated into existing navigation and footer rows */
+.store-social-bar{display:none!important}
+.store-nav{align-items:center}
+.store-inline-social{display:inline-flex;align-items:center;gap:12px;margin-left:2px}
+.store-inline-social a{display:inline-flex!important;align-items:center;justify-content:center;width:23px;height:23px;min-width:0!important;padding:0!important;border:0!important;border-radius:5px!important;background:transparent!important;color:#dcb7ff!important;box-shadow:none!important;transform:none!important}
+.store-inline-social a:hover{color:#ef55ff!important;background:#2a1038!important;box-shadow:0 0 12px #c52cff35!important}
+.store-inline-social svg{width:16px;height:16px;display:block;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.store-inline-social a:nth-child(1) svg,.store-inline-social a:nth-child(3) svg{fill:currentColor;stroke:none}
+.store-inline-social .social-fill{fill:currentColor;stroke:none}
+.store-footer-links{display:flex;align-items:center;justify-content:flex-end;gap:20px}
+.store-footer-social{gap:9px;margin:0}
+.store-footer-social a{width:22px;height:22px}
+.store-footer-social svg{width:15px;height:15px}
+@media(max-width:900px){.store-nav{gap:14px}.store-inline-social{gap:8px}.store-inline-social a{width:20px;height:22px}}
+@media(max-width:640px){
+ .store-nav.open .store-inline-social{display:flex;gap:14px;padding-top:5px}
+ .store-nav.open .store-inline-social a{width:28px;height:28px}
+ .store-nav.open .store-inline-social svg{width:18px;height:18px}
+ .store-footer-links{justify-content:flex-start;flex-wrap:wrap;gap:15px}
+ .store-footer-social{gap:12px}
+}

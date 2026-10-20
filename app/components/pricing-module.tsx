@@ -16,7 +16,7 @@ const labels: Record<Channel, string> = { mercado_livre: "Mercado Livre", shopee
 const money = (n: number) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const num = (v: number | string) => Number(v) || 0;
 
-export default function PricingModule() {
+export default function PricingModule({ mode = "pricing" }: { mode?: "pricing" | "channels" }) {
   const [rules, setRules] = useState<Rule[]>(defaults);
   const [products, setProducts] = useState<Product[]>([]);
   const [channel, setChannel] = useState<Channel>("shopee");
@@ -81,7 +81,7 @@ export default function PricingModule() {
   const field = (label: string, key: "commission_percent" | "fixed_fee" | "tax_percent" | "shipping_cost" | "target_margin_percent", suffix: string) => <label>{label}<div className="number-suffix"><input type="number" min="0" max={suffix === "%" ? "100" : undefined} step="0.01" value={String(rule[key])} onChange={e => updateRule(key, e.target.value)}/><span>{suffix}</span></div></label>;
 
   return <section>
-    <div className="page-heading"><div><div className="eyebrow">INTELIGÊNCIA DE PREÇO</div><h1>Precificação inteligente</h1><p>Configure taxas por canal e estime o preço necessário para atingir a margem desejada.</p></div><span className="metric-icon"><Calculator size={22}/></span></div>
+    <div className="page-heading"><div><div className="eyebrow">INTELIGÊNCIA DE PREÇO</div><h1>{mode === "channels" ? "Canais de venda" : "Precificação inteligente"}</h1><p>{mode === "channels" ? "Configure os custos e as regras comerciais dos marketplaces antes de publicar seus produtos." : "Configure taxas por canal e estime o preço necessário para atingir a margem desejada."}</p></div><span className="metric-icon"><Calculator size={22}/></span></div>
     {message && <div className="notice"><span>{message}</span></div>}
     <div className="pricing-layout">
       <section className="catalog-panel pricing-config"><div className="panel-heading"><div><h2>Regras do canal</h2><p>Use as taxas reais do seu contrato e regime tributário.</p></div></div>

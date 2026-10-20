@@ -2,6 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  // Rotas de automação são autenticadas pelo próprio endpoint via CRON_SECRET.
+  // Não exigir sessão Supabase aqui; a rota rejeita requisições sem Bearer válido.
+  if (request.nextUrl.pathname === "/api/cron/orvian-trends") {
+    return NextResponse.next();
+  }
+
   // Loja pública: a página inicial deve ser acessível sem autenticação.
   // As demais rotas continuam protegidas pelo fluxo administrativo abaixo.
   if (request.nextUrl.pathname === "/") {

@@ -28,6 +28,9 @@ export async function middleware(request: NextRequest) {
   const { data: { user }, error } = await supabase.auth.getUser();
 
   if (error || !user) {
+    if (request.nextUrl.pathname === "/login" || request.nextUrl.pathname === "/access-denied") {
+      return response;
+    }
     loginUrl.searchParams.set("next", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }
@@ -39,6 +42,7 @@ export async function middleware(request: NextRequest) {
     .maybeSingle();
 
   if (profileError || profile?.role !== "admin") {
+    if (request.nextUrl.pathname === "/access-denied") return response;
     return NextResponse.redirect(new URL("/access-denied", request.url));
   }
 

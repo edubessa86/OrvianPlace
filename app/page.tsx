@@ -194,7 +194,6 @@ export default function Home() {
 
           <section className="next-steps"><div className="next-icon"><CloudUpload size={20}/></div><div><strong>Próxima etapa: seu catálogo real</strong><p>O catálogo já consulta o banco de dados. A próxima etapa é gerenciar fornecedores e importar arquivos CSV/XLSX.</p></div><button onClick={() => setNotice("Planejamento: autenticação admin → banco de dados → cadastro de fornecedores → importação CSV/XLSX.")}>Acompanhar etapas <ArrowDownRight size={15}/></button></section>
           <footer className="app-footer"><span>ORVIANPLACE <span className="footer-dot">•</span> VERSÃO 0.1.0</span><span>Feito para decisões melhores.</span></footer>
-        </div>
           </>}
         </div>
       </section>

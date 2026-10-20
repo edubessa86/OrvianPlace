@@ -107,3 +107,5 @@
 .analytics-note{margin-top:18px}
 @media(max-width:1050px){.pricing-layout,.import-grid,.analytics-grid{grid-template-columns:1fr}}
 @media(max-width:760px){.pricing-kpis{grid-template-columns:1fr}.export-actions{width:100%}.export-actions button{flex:1}.catalog-modal{padding:18px}.import-form{padding:14px}.variant-row{align-items:flex-start}.variant-row .secondary-button{white-space:nowrap}}
+
+.import-template-link{padding:0 20px 10px}.import-template-link a{display:inline-flex;padding:8px 11px;border:1px solid var(--line);border-radius:7px;color:var(--green);font-size:10px;font-weight:700;text-decoration:none}.import-template-link a:hover{background:var(--green-pale)}

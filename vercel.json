@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/orvian-trends",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}

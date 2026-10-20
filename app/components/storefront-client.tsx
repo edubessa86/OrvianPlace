@@ -15,7 +15,7 @@ export default function StorefrontClient() {
     <main className="orvian-store">
       <div className="store-announcement">A sua próxima versão começa aqui <span>✦</span> Estamos preparando nossa primeira coleção</div>
       <header className="store-header">
-        <a className="store-logo" href="#" aria-label="Orvian início">ORVIAN<span>®</span><small>MODA FITNESS FEMININA</small></a>
+        <a className="store-logo" href="#" aria-label="Orvian início"><img src="/orvian-logo.svg" alt="ORVIAN — Vista sua melhor versão" /><small>MODA FITNESS FEMININA</small></a>
         <button className="store-menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menu">☰</button>
         <nav className={menuOpen ? "store-nav open" : "store-nav"}>
           <a href="#colecao" onClick={() => setMenuOpen(false)}>Coleção conceito</a>
@@ -67,7 +67,7 @@ export default function StorefrontClient() {
         <div className="store-newsletter-mark">O<span>®</span></div>
       </section>
 
-      <footer className="store-footer"><a className="store-logo" href="#">ORVIAN<span>®</span><small>VISTA SUA MELHOR VERSÃO</small></a><p>Moda fitness feminina, no seu ritmo.</p><div><a href="https://www.instagram.com/orvianoficial/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="#essencia">Nossa essência</a></div><small>© {new Date().getFullYear()} ORVIAN. Todos os direitos reservados. <a href="/painel">Acesso administrativo</a></small></footer>
+      <footer className="store-footer"><a className="store-logo store-logo-footer" href="#"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>VISTA SUA MELHOR VERSÃO</small></a><p>Moda fitness feminina, no seu ritmo.</p><div><a href="https://www.instagram.com/orvianoficial/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="#essencia">Nossa essência</a></div><small>© {new Date().getFullYear()} ORVIAN. Todos os direitos reservados. <a href="/painel">Acesso administrativo</a></small></footer>
     </main>
   );
 }

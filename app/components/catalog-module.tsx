@@ -29,6 +29,7 @@ export default function CatalogModule() {
   const [editing, setEditing] = useState<Product | null>(null);
   const [form, setForm] = useState(blank);
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [selected, setSelected] = useState<Product | null>(null);
   const [variants, setVariants] = useState<Variant[]>([]);
   const [variantForm, setVariantForm] = useState({ sku: "", size: "", color: "", cost_price: "", stock_quantity: "" });
@@ -85,6 +86,30 @@ export default function CatalogModule() {
     if (result.error) { setMessage("Não foi possível salvar: " + result.error.message); setSaving(false); return; }
     setMessage(editing ? "Produto atualizado." : "Produto cadastrado.");
     setFormOpen(false); setSaving(false); await load();
+  };
+
+  const uploadImage = async (file: File | undefined) => {
+    if (!file) return;
+    if (!editing) { setMessage("Salve o produto primeiro; depois abra Editar para anexar uma imagem."); return; }
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) { setMessage("Formato de imagem não suportado. Use JPG, PNG ou WebP."); return; }
+    if (file.size > 10 * 1024 * 1024) { setMessage("A imagem deve ter no máximo 10 MB."); return; }
+    setUploadingImage(true);
+    const db = createClient();
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+    const path = editing.id + "/" + Date.now() + "-" + safeName;
+    const { error: uploadError } = await db.storage.from("product-images").upload(path, file, { upsert: false, contentType: file.type });
+    if (uploadError) {
+      setMessage("Não foi possível enviar a imagem. Confira se a migração product_image_storage foi aplicada. Detalhe: " + uploadError.message);
+      setUploadingImage(false); return;
+    }
+    const publicUrl = db.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+    const { error: productError } = await db.from("products").update({ image_url: publicUrl }).eq("id", editing.id);
+    const { error: mediaError } = await db.from("product_media").insert({ product_id: editing.id, storage_path: path, alt_text: editing.name, sort_order: 0 });
+    if (productError) setMessage("A imagem foi enviada, mas não foi possível atualizar o produto: " + productError.message);
+    else if (mediaError) setMessage("Imagem atualizada; não foi possível registrar os metadados de mídia: " + mediaError.message);
+    else setMessage("Imagem enviada e vinculada ao produto.");
+    setUploadingImage(false);
+    await load();
   };
 
   const remove = async (p: Product) => {
@@ -153,6 +178,8 @@ export default function CatalogModule() {
         <div className="form-row"><label>Custo (R$) *<input type="number" min="0" step="0.01" required value={form.cost_price} onChange={e => setForm({...form,cost_price:e.target.value})}/></label><label>Preço sugerido (R$) *<input type="number" min="0" step="0.01" required value={form.suggested_price} onChange={e => setForm({...form,suggested_price:e.target.value})}/></label></div>
         <div className="form-row"><label>Estoque (opcional)<input type="number" min="0" step="1" value={form.stock_quantity} onChange={e => setForm({...form,stock_quantity:e.target.value})}/></label><label>Disponibilidade<select value={form.availability_status} onChange={e => setForm({...form,availability_status:e.target.value as Product["availability_status"]})}><option value="unknown">Não verificada</option><option value="available">Disponível</option><option value="unavailable">Indisponível</option></select></label></div>
         <label>URL da imagem<input type="url" value={form.image_url} onChange={e => setForm({...form,image_url:e.target.value})} placeholder="https://..."/></label>
+        {editing && <label className="image-upload-control">Enviar imagem (JPG, PNG ou WebP; até 10 MB)<input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploadingImage} onChange={e => { void uploadImage(e.target.files?.[0]); e.currentTarget.value = ""; }}/>{uploadingImage && <small>Enviando imagem...</small>}</label>}
+        {form.image_url && <div className="image-preview"><img src={form.image_url} alt="Prévia do produto"/><span>Prévia da imagem atual</span></div>}
         <label>Descrição<textarea rows={2} value={form.description} onChange={e => setForm({...form,description:e.target.value})}/></label>
         <label>Observações<textarea rows={2} value={form.notes} onChange={e => setForm({...form,notes:e.target.value})}/></label>
         <div className="modal-actions"><button type="button" className="secondary-button" onClick={() => setFormOpen(false)}>Cancelar</button><button type="submit" className="primary-button" disabled={saving}><Save size={15}/>{saving ? "Salvando..." : "Salvar produto"}</button></div>

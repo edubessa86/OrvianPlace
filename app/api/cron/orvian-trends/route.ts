@@ -66,22 +66,39 @@ export async function GET(request: Request) {
     const now = new Date();
     const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
     const publishedAt = now.toISOString();
-    const model = process.env.ORVIAN_TRENDS_MODEL || "gemini-3.8-flash";
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-      method: "POST",
-      headers: { "x-goog-api-key": geminiApiKey, "content-type": "application/json" },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: editorialPrompt }] },
-        contents: [{ role: "user", parts: [{ text: JSON.stringify({ date: today, research: sources, instruction: "Crie um único artigo útil, original e prático. As fontes abaixo são pistas editoriais, não fatos automaticamente verificados. Inclua apenas afirmações sustentadas pelas informações disponíveis." }) }] }],
-        generationConfig: { responseMimeType: "application/json" }
-      }),
-      signal: AbortSignal.timeout(45000)
-    });
-    if (!response.ok) {
-      const detail = await response.text();
-      return NextResponse.json({ error: "Falha ao gerar conteúdo com Gemini.", detail: detail.slice(0, 600) }, { status: 502 });
+    const models = [...new Set([process.env.ORVIAN_TRENDS_MODEL || "gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite"])];
+    const payload = {
+      systemInstruction: { parts: [{ text: editorialPrompt }] },
+      contents: [{ role: "user", parts: [{ text: JSON.stringify({ date: today, research: sources, instruction: "Crie um único artigo útil, original e prático. As fontes abaixo são pistas editoriais, não fatos automaticamente verificados. Inclua apenas afirmações sustentadas pelas informações disponíveis." }) }] }],
+      generationConfig: { responseMimeType: "application/json" }
+    };
+    let result: any = null;
+    let lastDetail = "";
+    for (const model of models) {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+            method: "POST",
+            headers: { "x-goog-api-key": geminiApiKey, "content-type": "application/json" },
+            body: JSON.stringify(payload),
+            signal: AbortSignal.timeout(45000)
+          });
+          if (response.ok) {
+            result = await response.json();
+            break;
+          }
+          lastDetail = await response.text();
+          if (![429, 500, 502, 503, 504].includes(response.status)) break;
+        } catch (err) {
+          lastDetail = err instanceof Error ? err.message : "Erro de rede";
+        }
+        if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 1200));
+      }
+      if (result) break;
     }
-    const result = await response.json();
+    if (!result) {
+      return NextResponse.json({ error: "Os modelos Gemini configurados não conseguiram gerar o conteúdo.", detail: lastDetail.slice(0, 600) }, { status: 502 });
+    }
     const raw = result.candidates?.[0]?.content?.parts?.map((part: { text?: string }) => part.text ?? "").join("");
     if (!raw) throw new Error("O Gemini retornou conteúdo vazio.");
     const draft = JSON.parse(raw) as TrendDraft;

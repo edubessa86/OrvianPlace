@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Boxes, Plus, Search, Pencil, Trash2, X, Save, Image as ImageIcon, Layers, Download } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { logAudit } from "@/lib/audit";
 
 type Supplier = { id: string; name: string; active: boolean };
 type Product = {
@@ -81,9 +82,10 @@ export default function CatalogModule() {
       stock_quantity: stock, availability_status: form.availability_status, notes: form.notes.trim() || null
     };
     const result = editing
-      ? await db.from("products").update(payload).eq("id", editing.id)
-      : await db.from("products").insert(payload);
+      ? await db.from("products").update(payload).eq("id", editing.id).select("id").single()
+      : await db.from("products").insert(payload).select("id").single();
     if (result.error) { setMessage("Não foi possível salvar: " + result.error.message); setSaving(false); return; }
+    await logAudit(editing ? "product.updated" : "product.created", "product", result.data?.id ?? editing?.id ?? null, { name: payload.name, category: payload.category });
     setMessage(editing ? "Produto atualizado." : "Produto cadastrado.");
     setFormOpen(false); setSaving(false); await load();
   };
@@ -107,7 +109,7 @@ export default function CatalogModule() {
     const { error: mediaError } = await db.from("product_media").insert({ product_id: editing.id, storage_path: path, alt_text: editing.name, sort_order: 0 });
     if (productError) setMessage("A imagem foi enviada, mas não foi possível atualizar o produto: " + productError.message);
     else if (mediaError) setMessage("Imagem atualizada; não foi possível registrar os metadados de mídia: " + mediaError.message);
-    else setMessage("Imagem enviada e vinculada ao produto.");
+    else { await logAudit("product.image_uploaded", "product", editing.id, { file_name: file.name, storage_path: path }); setMessage("Imagem enviada e vinculada ao produto."); }
     setUploadingImage(false);
     await load();
   };
@@ -117,7 +119,7 @@ export default function CatalogModule() {
     const db = createClient();
     const { error } = await db.from("products").delete().eq("id", p.id);
     if (error) setMessage("Não foi possível excluir: " + error.message);
-    else { setMessage("Produto excluído."); if (selected?.id === p.id) setSelected(null); await load(); }
+    else { await logAudit("product.deleted", "product", p.id, { name: p.name }); setMessage("Produto excluído."); if (selected?.id === p.id) setSelected(null); await load(); }
   };
 
   const openVariants = async (p: Product) => {
@@ -138,6 +140,7 @@ export default function CatalogModule() {
       color: variantForm.color.trim() || null, cost_price: cost, stock_quantity: stock
     });
     if (error) { setMessage("Não foi possível adicionar variante: " + error.message); return; }
+    await logAudit("product_variant.created", "product_variant", selected.id, { product_name: selected.name, size: variantForm.size, color: variantForm.color, sku: variantForm.sku });
     setVariantForm({ sku: "", size: "", color: "", cost_price: "", stock_quantity: "" });
     await openVariants(selected); setMessage("Variante adicionada.");
   };
@@ -146,7 +149,7 @@ export default function CatalogModule() {
     if (!window.confirm("Excluir esta variante?")) return;
     const { error } = await createClient().from("product_variants").delete().eq("id", v.id);
     if (error) setMessage("Erro ao excluir variante: " + error.message);
-    else if (selected) await openVariants(selected);
+    else { await logAudit("product_variant.deleted", "product_variant", v.id, { product_id: v.product_id, sku: v.sku }); if (selected) await openVariants(selected); }
   };
 
   const exportCatalog = () => {

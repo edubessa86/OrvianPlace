@@ -4,6 +4,12 @@ import { createClient } from "@supabase/supabase-js";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+type GeminiResponse = {
+  candidates?: Array<{
+    content?: { parts?: Array<{ text?: string }> };
+  }>;
+};
+
 type TrendDraft = {
   title: string;
   slug: string;
@@ -72,7 +78,7 @@ export async function GET(request: Request) {
       contents: [{ role: "user", parts: [{ text: JSON.stringify({ date: today, research: sources, instruction: "Crie um único artigo útil, original e prático. As fontes abaixo são pistas editoriais, não fatos automaticamente verificados. Inclua apenas afirmações sustentadas pelas informações disponíveis." }) }] }],
       generationConfig: { responseMimeType: "application/json" }
     };
-    let result: any = null;
+    let result: GeminiResponse | null = null;
     let lastDetail = "";
     for (const model of models) {
       for (let attempt = 0; attempt < 2; attempt++) {
@@ -84,7 +90,7 @@ export async function GET(request: Request) {
             signal: AbortSignal.timeout(45000)
           });
           if (response.ok) {
-            result = await response.json();
+            result = (await response.json()) as GeminiResponse;
             break;
           }
           lastDetail = await response.text();

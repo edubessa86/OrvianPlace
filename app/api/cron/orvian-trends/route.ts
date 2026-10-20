@@ -66,14 +66,14 @@ export async function GET(request: Request) {
     const now = new Date();
     const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
     const publishedAt = now.toISOString();
-    const model = process.env.ORVIAN_TRENDS_MODEL || "gemini-2.5-flash";
+    const model = process.env.ORVIAN_TRENDS_MODEL || "gemini-3.8-flash";
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: "POST",
       headers: { "x-goog-api-key": geminiApiKey, "content-type": "application/json" },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: editorialPrompt }] },
         contents: [{ role: "user", parts: [{ text: JSON.stringify({ date: today, research: sources, instruction: "Crie um único artigo útil, original e prático. As fontes abaixo são pistas editoriais, não fatos automaticamente verificados. Inclua apenas afirmações sustentadas pelas informações disponíveis." }) }] }],
-        generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
+        generationConfig: { responseMimeType: "application/json" }
       }),
       signal: AbortSignal.timeout(45000)
     });
@@ -101,6 +101,6 @@ export async function GET(request: Request) {
     if (error) throw new Error(error.message);
     return NextResponse.json({ ok: true, message: "Artigo publicado automaticamente no blog da Orvian.", post: data, sources_count: sources.length });
   } catch (error) {
-    return NextResponse.json({ error: "Não foi possível preparar o rascunho.", detail: error instanceof Error ? error.message : "Erro inesperado" }, { status: 500 });
+    return NextResponse.json({ error: "Não foi possível gerar e publicar o artigo.", detail: error instanceof Error ? error.message : "Erro inesperado" }, { status: 500 });
   }
 }

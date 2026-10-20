@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FileSpreadsheet, FileText, UploadCloud, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react";
 import * as XLSX from "xlsx";
 import { createClient } from "@/lib/supabase/client";
+import { logAudit } from "@/lib/audit";
 
 type Supplier = { id: string; name: string };
 type ImportRow = { name: string; supplier_sku: string | null; category: string; brand: string | null; cost_price: number; suggested_price: number; stock_quantity: number | null; description: string | null; raw: Record<string, unknown>; rowNumber: number };
@@ -166,6 +167,7 @@ export default function ImportModule() {
       status, total_rows: rows.length + errors.length, imported_rows: imported,
       skipped_rows: skipped, error_report: finalErrors, completed_at: new Date().toISOString()
     }).eq("id", importRecord.id);
+    await logAudit("catalog.imported", "catalog_import", importRecord.id, { file_name: file.name, imported_rows: imported, skipped_rows: skipped, status });
     setMessage(updateError ? "Importação executada, mas houve erro ao atualizar o histórico: " + updateError.message : "Importação concluída: " + imported + " produto(s) importado(s), " + skipped + " linha(s) com erro.");
     setImporting(false); setFile(null); setRows([]); setErrors([]); setPdfText(""); await load();
   };

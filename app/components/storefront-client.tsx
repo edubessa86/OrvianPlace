@@ -1,88 +1,90 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import HomeTrends from "@/app/components/home-trends";
+import { ArrowDownRight, ArrowUpRight, Menu, X, Instagram, Search, ShoppingBag, Heart, ArrowRight } from "lucide-react";
 
 const products = [
-  { name: "Legging Sculpt", category: "Leggings", price: "R$ 149,90", tone: "look-one", tag: "PEÇA-CONCEITO" },
-  { name: "Top Aura", category: "Tops", price: "R$ 89,90", tone: "look-two", tag: "PEÇA-CONCEITO" },
-  { name: "Conjunto Flow", category: "Conjuntos", price: "R$ 219,90", tone: "look-three", tag: "PEÇA-CONCEITO" },
-  { name: "Jaqueta Move", category: "Sobreposições", price: "R$ 189,90", tone: "look-four", tag: "PEÇA-CONCEITO" },
+  { name: "Legging Sculpt", category: "Performance · Leggings", price: "R$ 149,90", image: "https://images.unsplash.com/photo-1506629905607-d9d4e1c5a1f3?auto=format&fit=crop&w=900&q=85", tag: "MAIS DESEJADO" },
+  { name: "Top Aura", category: "Performance · Tops", price: "R$ 89,90", image: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=900&q=85", tag: "ESSENCIAL" },
+  { name: "Conjunto Flow", category: "Sets · Conjuntos", price: "R$ 219,90", image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=85", tag: "CONCEITO 03" },
+  { name: "Jaqueta Move", category: "Layers · Sobreposições", price: "R$ 189,90", image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=85", tag: "CONCEITO 04" },
 ];
 
 export default function StorefrontClient() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [saved, setSaved] = useState<string[]>([]);
+  const [bag, setBag] = useState(0);
+  const [toast, setToast] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  function notify(message: string) {
+    setToast(message);
+    window.setTimeout(() => setToast(""), 2600);
+  }
+
   return (
-    <main className="orvian-store">
-      <div className="store-announcement">A sua próxima versão começa aqui <span>✦</span> Estamos preparando nossa primeira coleção</div>
-      <header className="store-header">
-        <a className="store-logo" href="#" aria-label="Orvian início"><img src="/orvian-logo.svg" alt="ORVIAN — Vista sua melhor versão" /><small>MODA FITNESS FEMININA</small></a>
-        <button className="store-menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menu">☰</button>
-        <nav className={menuOpen ? "store-nav open" : "store-nav"}>
-          <a href="#colecao" onClick={() => setMenuOpen(false)}>Coleção conceito</a>
-          <a href="#essencia" onClick={() => setMenuOpen(false)}>Nossa essência</a>
-          <a href="#orvian-trends" onClick={() => setMenuOpen(false)}>Orvian Trends</a>
-          <a href="#novidades" onClick={() => setMenuOpen(false)}>Novidades</a>
-          <span className="store-inline-social" aria-label="Redes sociais">
-            <a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 21v-8h3l.5-4H14V7c0-1.2.4-2 2-2h2V1.4C17.3 1.2 16.3 1 15 1c-3.4 0-5.5 2-5.5 5.7V9H6v4h3.5v8z"/></svg></a>
-            <a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" className="social-fill"/></svg></a>
-            <a href="https://www.youtube.com/@UseOrvian" target="_blank" rel="noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6z"/></svg></a>
-            <a href="mailto:useorvian@gmail.com" aria-label="E-mail"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a>
-          </span>
+    <main className="orvian-store editorial-store">
+      <div className="editorial-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>COLEÇÃO CONCEITO — 001</span></div>
+      <header className="editorial-header">
+        <button className="editorial-icon mobile-menu-button" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+        <nav className={menuOpen ? "editorial-nav is-open" : "editorial-nav"}>
+          <Link href="/colecoes" onClick={() => setMenuOpen(false)}>Coleções</Link>
+          <Link href="/novidades" onClick={() => setMenuOpen(false)}>Novidades</Link>
+          <Link href="/essencia" onClick={() => setMenuOpen(false)}>Nossa essência</Link>
+          <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
+          <Link href="/contato" onClick={() => setMenuOpen(false)}>Contato</Link>
         </nav>
-        <a className="store-header-cta" href="#novidades">Entre para a lista <span>↗</span></a>
+        <a className="editorial-wordmark" href="#" aria-label="ORVIAN início">ORVIAN<span>®</span><small>ACTIVE / EVERYDAY</small></a>
+        <div className="editorial-actions">
+          <button className="editorial-icon search-trigger" aria-label="Pesquisar" onClick={() => setSearchOpen(!searchOpen)}><Search /></button>
+          <button className="editorial-icon bag-trigger" aria-label="Sacola demonstrativa" onClick={() => notify("A sacola será ativada quando a loja estiver pronta.")}><ShoppingBag /><span>{bag}</span></button>
+        </div>
       </header>
-
-      <section className="store-hero">
-        <div className="store-hero-copy">
-          <p className="store-eyebrow"><span /> MOVIMENTO • AUTENTICIDADE • VOCÊ</p>
-          <h1>Vista sua<br /><em>melhor versão.</em></h1>
-          <p className="store-hero-text">Moda fitness feminina para acompanhar seu ritmo, respeitar sua jornada e celebrar cada conquista — do seu jeito.</p>
-          <a className="store-button" href="#colecao">Explore a coleção conceito <span>↘</span></a>
-          <div className="store-hero-note"><span>✳</span> Feita para a vida real. Inspirada em você.</div>
+      {searchOpen && <div className="editorial-search"><Search size={17}/><input autoFocus placeholder="O que você procura?" aria-label="Pesquisar produtos"/><button onClick={() => setSearchOpen(false)} aria-label="Fechar pesquisa"><X size={18}/></button></div>}
+      <section className="editorial-hero">
+        <div className="editorial-hero-copy">
+          <p className="editorial-overline"><span>01</span> VISTA SUA MELHOR VERSÃO</p>
+          <h1>Move<br/><em>with</em> purpose<span className="hero-period">.</span></h1>
+          <div className="editorial-hero-bottom"><p>Uma nova perspectiva sobre o vestir. Peças que acompanham o seu movimento e revelam a sua presença — dentro e fora do treino.</p><Link href="/colecoes" className="editorial-round-link" aria-label="Explorar coleção"><ArrowDownRight /></Link></div>
         </div>
-        <div className="store-hero-visual" role="img" aria-label="Imagem editorial de moda fitness feminina">
-          <div className="store-hero-image" />
-          <div className="store-hero-stamp">YOUR<br />OWN<br /><i>PACE.</i></div>
-          <div className="store-hero-caption"><span>01 / 04</span><span>ESSENTIAL MOVEMENT</span></div>
+        <div className="editorial-hero-image">
+          <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1800&q=90" alt="Atmosfera de treino e movimento" />
+          <div className="editorial-image-number">O / 001</div><div className="editorial-image-caption">THE ART OF MOVEMENT — ORVIAN STUDIO</div>
+        </div>
+        <div className="editorial-hero-vertical">EST. FOR YOUR EVERYDAY MOVEMENT</div>
+      </section>
+      <div className="editorial-marquee"><div>MOVE WITH INTENTION <i>✳</i> OWN YOUR PACE <i>✳</i> ORVIAN STUDIO <i>✳</i> MOVE WITH INTENTION <i>✳</i> OWN YOUR PACE <i>✳</i></div></div>
+
+      <section className="editorial-manifesto" id="essencia">
+        <div className="editorial-section-index">02 / NOSSA ESSÊNCIA</div>
+        <div className="editorial-manifesto-main"><p className="editorial-small-label">NÃO É SOBRE SER OUTRA PESSOA.</p><h2>É sobre vestir<br/>quem você <em>é.</em></h2><div className="editorial-manifesto-foot"><p>Acreditamos na força dos detalhes, na liberdade de movimento e na confiança que nasce quando você se sente bem na própria pele.</p><span>ORVIAN — VISTA SUA MELHOR VERSÃO</span></div></div>
+        <div className="editorial-manifesto-photo"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85" alt="Editorial de moda contemporânea"/><span>FIG. 01 — MOVEMENT STUDY</span></div>
+      </section>
+
+      <section className="editorial-collections" id="colecao">
+        <div className="editorial-section-heading"><div><p className="editorial-small-label">03 / EXPLORE O UNIVERSO ORVIAN</p><h2>Designed to<br/><em>move you.</em></h2></div><p>Forma, função e atitude. Descubra as linhas que inspiram nosso olhar para a moda fitness feminina.</p></div>
+        <div className="editorial-collection-grid">
+          <Link className="editorial-collection-card collection-large" href="/colecoes"><img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=1300&q=85" alt="Mulher em movimento"/><span className="collection-count">COLLECTION / 01</span><div><span>PERFORMANCE</span><strong>In motion</strong><i><ArrowUpRight/></i></div></Link>
+          <Link className="editorial-collection-card collection-small" href="/colecoes"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1100&q=85" alt="Moda feminina contemporânea"/><span className="collection-count">COLLECTION / 02</span><div><span>EVERYDAY</span><strong>Beyond the gym</strong><i><ArrowUpRight/></i></div></Link>
         </div>
       </section>
 
-      <section className="store-values" id="essencia">
-        <div><span>01</span><strong>Seu ritmo, suas regras</strong><p>Peças para acompanhar cada etapa da sua jornada.</p></div>
-        <div><span>02</span><strong>Conforto em movimento</strong><p>Funcionalidade e estilo em equilíbrio.</p></div>
-        <div><span>03</span><strong>Autenticidade sempre</strong><p>Vista quem você é — e quem deseja ser.</p></div>
-      </section>
-
-      <section className="store-collection" id="colecao">
-        <div className="store-section-heading"><div><p className="store-eyebrow">UMA PRÉVIA DO QUE VEM AÍ</p><h2>Movimente-se <em>com intenção.</em></h2></div><p>Uma seleção visual de conceitos que inspiram a primeira coleção Orvian.</p></div>
-        <div className="store-demo-notice">PRÉ-LANÇAMENTO · Estes são produtos demonstrativos. Ainda não estão à venda.</div>
-        <div className="store-product-grid">
-          {products.map((product, i) => <article className="store-product" key={product.name}>
-            <div className={"store-product-art " + product.tone}>
-              <span className="store-product-index">0{i + 1}</span>
-              <span className="store-product-tag">{product.tag}</span>
-              <span className="store-product-symbol">O.</span>
-            </div>
-            <div className="store-product-info"><div><p>{product.category}</p><h3>{product.name}</h3></div><span className="store-product-price">{product.price}<small>preço ilustrativo</small></span></div>
-            <button className="store-disabled-buy" disabled>Disponível em breve</button>
-          </article>)}
-        </div>
+      <section className="editorial-products" id="novidades">
+        <div className="editorial-section-heading"><div><p className="editorial-small-label">04 / SELEÇÃO CONCEITO</p><h2>Considered<br/><em>essentials.</em></h2></div><div className="editorial-products-note"><span>PRÉ-LANÇAMENTO</span><p>Uma visão do que vem por aí. Produtos e valores ilustrativos nesta prévia visual.</p></div></div>
+        <div className="editorial-product-grid">{products.map((product, index) => <article className="editorial-product" key={product.name}><div className="editorial-product-image"><img src={product.image} alt={product.name} loading="lazy"/><span className="editorial-product-tag">{product.tag}</span><button className={saved.includes(product.name) ? "editorial-favorite is-saved" : "editorial-favorite"} aria-label={saved.includes(product.name) ? "Remover dos favoritos" : "Salvar favorito"} onClick={() => setSaved(saved.includes(product.name) ? saved.filter(item => item !== product.name) : [...saved, product.name])}><Heart fill={saved.includes(product.name) ? "currentColor" : "none"}/></button><button className="editorial-add" onClick={() => notify("Prévia conceitual: " + product.name + " ainda não está à venda.")}>DESCOBRIR PEÇA <ArrowUpRight size={15}/></button><span className="editorial-product-index">0{index + 1}</span></div><div className="editorial-product-details"><div><p>{product.category}</p><h3>{product.name}</h3></div><span>{product.price}<small>valor ilustrativo</small></span></div></article>)}</div>
+        <p className="editorial-demo-disclaimer">ESTA É UMA PRÉVIA DE DESIGN. PRODUTOS, IMAGENS E PREÇOS NÃO REPRESENTAM OFERTAS DISPONÍVEIS.</p>
       </section>
 
       <HomeTrends />
 
-      <section className="store-newsletter" id="novidades">
-        <div><p className="store-eyebrow">SEJA A PRIMEIRA A SABER</p><h2>O próximo movimento<br /><em>começa com você.</em></h2><p>Estamos preparando tudo com cuidado. Acompanhe a Orvian para saber quando a coleção real chegar.</p><a className="store-button store-button-light" href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Acompanhe no Instagram <span>↗</span></a></div>
-        <div className="store-newsletter-mark">O<span>®</span></div>
-      </section>
+      <section className="editorial-campaign"><img src="https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=2000&q=85" alt="Campanha visual de movimento" loading="lazy"/><div className="editorial-campaign-overlay"></div><div className="editorial-campaign-copy"><p className="editorial-small-label">05 / O SEU MOVIMENTO, A SUA HISTÓRIA</p><h2>Own<br/>your <em>pace.</em></h2><Link href="/novidades" className="editorial-text-link">Explore a seleção <ArrowUpRight size={17}/></Link></div><span className="editorial-campaign-side">ORVIAN STUDIO — 2026</span></section>
 
-      <footer className="store-footer"><a className="store-logo store-logo-footer" href="#"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>VISTA SUA MELHOR VERSÃO</small></a><p>Moda fitness feminina, no seu ritmo.</p><div className="store-footer-links"><a href="#essencia">Nossa essência</a><span className="store-inline-social store-footer-social" aria-label="Redes sociais">
-<a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 21v-8h3l.5-4H14V7c0-1.2.4-2 2-2h2V1.4C17.3 1.2 16.3 1 15 1c-3.4 0-5.5 2-5.5 5.7V9H6v4h3.5v8z"/></svg></a>
-<a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" className="social-fill"/></svg></a>
-<a href="https://www.youtube.com/@UseOrvian" target="_blank" rel="noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6z"/></svg></a>
-<a href="mailto:useorvian@gmail.com" aria-label="E-mail"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a>
-</span></div><small>© {new Date().getFullYear()} ORVIAN. Todos os direitos reservados. <a href="/painel">Acesso administrativo</a></small></footer>
+      <section className="editorial-newsletter"><div><p className="editorial-small-label">NOTAS DO UNIVERSO ORVIAN</p><h2>Be part<br/>of the <em>movement.</em></h2></div><div className="editorial-newsletter-right"><p>Novas ideias, inspirações e novidades da marca. Acompanhe nossa jornada e seja uma das primeiras a conhecer a coleção.</p><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer" className="editorial-text-link">Siga @_useorvian <Instagram size={16}/></a></div><span className="editorial-newsletter-mark">O.</span></section>
+
+      <footer className="editorial-footer"><div className="editorial-footer-top"><div><Link className="editorial-footer-wordmark" href="/">ORVIAN<span>®</span></Link><p>Moda fitness feminina,<br/>no seu ritmo.</p></div><div><span className="editorial-footer-label">EXPLORE</span><Link href="/colecoes">Coleções</Link><Link href="/novidades">Novidades</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog">Blog / Orvian Trends</Link></div><div><span className="editorial-footer-label">ATENDIMENTO</span><Link href="/contato">Fale conosco</Link><a href="mailto:useorvian@gmail.com?subject=Entrega%20e%20devolu%C3%A7%C3%A3o">Entrega e devolução</a><a href="mailto:useorvian@gmail.com?subject=D%C3%BAvidas%20ORVIAN">Perguntas frequentes</a></div><div><span className="editorial-footer-label">REDES SOCIAIS</span><a href="mailto:useorvian@gmail.com">E-mail</a><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer">Facebook ↗</a><a href="https://www.youtube.com/@UseOrvian" target="_blank" rel="noreferrer">YouTube ↗</a></div><div className="editorial-footer-note"><span>VISTA SUA MELHOR VERSÃO.</span><p>Feita para a vida real.<br/>Inspirada em você.</p></div></div><div className="editorial-footer-bottom"><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>MODA FITNESS FEMININA / VISTA SUA MELHOR VERSÃO</span><Link href="/painel">ACESSO ADMINISTRATIVO ↗</Link></div></footer>
+      {toast && <div className="editorial-toast" role="status">{toast}</div>}
     </main>
   );
 }

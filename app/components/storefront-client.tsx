@@ -32,6 +32,7 @@ export default function StorefrontClient() {
           <a href="#colecao" onClick={() => setMenuOpen(false)}>Coleção</a>
           <a href="#novidades" onClick={() => setMenuOpen(false)}>Novidades</a>
           <a href="#essencia" onClick={() => setMenuOpen(false)}>Manifesto</a>
+          <a href="/blog" onClick={() => setMenuOpen(false)}>Trends</a>
         </nav>
         <a className="editorial-wordmark" href="#" aria-label="ORVIAN início">ORVIAN<span>®</span><small>ACTIVE / EVERYDAY</small></a>
         <div className="editorial-actions">
@@ -80,7 +81,7 @@ export default function StorefrontClient() {
 
       <section className="editorial-newsletter"><div><p className="editorial-small-label">NOTAS DO UNIVERSO ORVIAN</p><h2>Be part<br/>of the <em>movement.</em></h2></div><div className="editorial-newsletter-right"><p>Novas ideias, inspirações e novidades da marca. Acompanhe nossa jornada e seja uma das primeiras a conhecer a coleção.</p><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer" className="editorial-text-link">Siga @_useorvian <Instagram size={16}/></a></div><span className="editorial-newsletter-mark">O.</span></section>
 
-      <footer className="editorial-footer"><div className="editorial-footer-top"><div><a className="editorial-footer-wordmark" href="#">ORVIAN<span>®</span></a><p>Moda fitness feminina,<br/>no seu ritmo.</p></div><div><span className="editorial-footer-label">EXPLORE</span><a href="#colecao">Coleções</a><a href="#novidades">Novidades</a><a href="#essencia">Nossa essência</a></div><div><span className="editorial-footer-label">CONTATO</span><a href="mailto:useorvian@gmail.com">E-mail</a><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer">Facebook ↗</a></div><div className="editorial-footer-note"><span>VISTA SUA MELHOR VERSÃO.</span><p>Feita para a vida real.<br/>Inspirada em você.</p></div></div><div className="editorial-footer-bottom"><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>PRÉVIA VISUAL — NÃO PUBLICADA</span><a href="/painel">ACESSO ADMINISTRATIVO ↗</a></div></footer>
+      <footer className="editorial-footer"><div className="editorial-footer-top"><div><a className="editorial-footer-wordmark" href="#">ORVIAN<span>®</span></a><p>Moda fitness feminina,<br/>no seu ritmo.</p></div><div><span className="editorial-footer-label">EXPLORE</span><a href="#colecao">Coleções</a><a href="#novidades">Novidades</a><a href="#essencia">Nossa essência</a><a href="/blog">Orvian Trends</a></div><div><span className="editorial-footer-label">CONTATO</span><a href="mailto:useorvian@gmail.com">E-mail</a><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer">Facebook ↗</a></div><div className="editorial-footer-note"><span>VISTA SUA MELHOR VERSÃO.</span><p>Feita para a vida real.<br/>Inspirada em você.</p></div></div><div className="editorial-footer-bottom"><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>PRÉVIA VISUAL — NÃO PUBLICADA</span><a href="/painel">ACESSO ADMINISTRATIVO ↗</a></div></footer>
       {toast && <div className="editorial-toast" role="status">{toast}</div>}
     </main>
   );

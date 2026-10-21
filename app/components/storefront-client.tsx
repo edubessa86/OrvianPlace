@@ -47,7 +47,7 @@ export default function StorefrontClient() {
         <div className="editorial-hero-copy">
           <p className="editorial-overline"><span>01</span> VISTA SUA MELHOR VERSÃO</p>
           <h1>Move<br/><em>with</em> purpose<span className="hero-period">.</span></h1>
-          <div className="editorial-hero-bottom"><p>Uma nova perspectiva sobre o vestir. Peças que acompanham o seu movimento e revelam a sua presença — dentro e fora do treino.</p><a href="#colecao" className="editorial-round-link" aria-label="Explorar coleção"><ArrowDownRight /></a></div>
+          <div className="editorial-hero-bottom"><p>Uma nova perspectiva sobre o vestir. Peças que acompanham o seu movimento e revelam a sua presença — dentro e fora do treino.</p><Link href="/colecoes" className="editorial-round-link" aria-label="Explorar coleção"><ArrowDownRight /></Link></div>
         </div>
         <div className="editorial-hero-image">
           <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1800&q=90" alt="Atmosfera de treino e movimento" />
@@ -66,8 +66,8 @@ export default function StorefrontClient() {
       <section className="editorial-collections" id="colecao">
         <div className="editorial-section-heading"><div><p className="editorial-small-label">03 / EXPLORE O UNIVERSO ORVIAN</p><h2>Designed to<br/><em>move you.</em></h2></div><p>Forma, função e atitude. Descubra as linhas que inspiram nosso olhar para a moda fitness feminina.</p></div>
         <div className="editorial-collection-grid">
-          <a className="editorial-collection-card collection-large" href="#novidades"><img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=1300&q=85" alt="Mulher em movimento"/><span className="collection-count">COLLECTION / 01</span><div><span>PERFORMANCE</span><strong>In motion</strong><i><ArrowUpRight/></i></div></a>
-          <a className="editorial-collection-card collection-small" href="#novidades"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1100&q=85" alt="Moda feminina contemporânea"/><span className="collection-count">COLLECTION / 02</span><div><span>EVERYDAY</span><strong>Beyond the gym</strong><i><ArrowUpRight/></i></div></a>
+          <Link className="editorial-collection-card collection-large" href="/colecoes"><img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=1300&q=85" alt="Mulher em movimento"/><span className="collection-count">COLLECTION / 01</span><div><span>PERFORMANCE</span><strong>In motion</strong><i><ArrowUpRight/></i></div></Link>
+          <Link className="editorial-collection-card collection-small" href="/colecoes"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1100&q=85" alt="Moda feminina contemporânea"/><span className="collection-count">COLLECTION / 02</span><div><span>EVERYDAY</span><strong>Beyond the gym</strong><i><ArrowUpRight/></i></div></Link>
         </div>
       </section>
 

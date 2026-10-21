@@ -33,7 +33,7 @@ export default async function EditorialArticle({ params }: { params: Promise<{ s
     <div className="oa-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>EDITORIAL / TRENDS</span></div>
     <header className="oa-header">
       <Link href="/" className="oa-wordmark"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>MODA FITNESS FEMININA</small></Link>
-      <nav aria-label="Navegação principal"><Link href="/#colecao">Coleção</Link><Link href="/#novidades">Novidades</Link><Link href="/nossa-historia">Nossa história</Link><Link href="/blog">Blog</Link><Link href="/contato">Contato</Link></nav>
+      <nav aria-label="Navegação principal"><Link href="/colecoes">Coleção</Link><Link href="/novidades">Novidades</Link><Link href="/essencia">Nossa história</Link><Link href="/blog">Blog</Link><Link href="/contato">Fale conosco</Link></nav>
       <Link href="/#lista" className="oa-back">ENTRE PARA A LISTA ↗</Link>
     </header>
     <div className="oa-breadcrumb"><Link href="/">INÍCIO</Link><span>/</span><Link href="/blog">ORVIAN TRENDS</Link><span>/</span><span>{post.category || "EDITORIAL"}</span></div>

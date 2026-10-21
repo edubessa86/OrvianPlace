@@ -14,7 +14,7 @@ export default function EditorialInfoPage({ eyebrow, title, emphasis, intro, sec
   return <main className="orvian-info-page">
     <div className="oi-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>VISTA SUA MELHOR VERSÃO</span></div>
     <header className="oi-header">
-      <nav aria-label="Navegação principal"><Link href="/#colecao">Coleção</Link><Link href="/#novidades">Novidades</Link><Link href="/nossa-historia">Nossa história</Link><Link href="/blog">Blog</Link><Link href="/contato">Contato</Link></nav>
+      <nav aria-label="Navegação principal"><Link href="/colecoes">Coleções</Link><Link href="/novidades">Novidades</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog">Blog</Link><Link href="/contato">Contato</Link></nav>
       <Link href="/" className="oi-wordmark" aria-label="ORVIAN início"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>ACTIVE / EVERYDAY</small></Link>
       <Link href="/#lista" className="oi-back">SACOLA ↗</Link>
     </header>
@@ -36,8 +36,8 @@ export default function EditorialInfoPage({ eyebrow, title, emphasis, intro, sec
     <section className="oi-cta"><div><p className="oi-label">ORVIAN STUDIO / 2026</p><h2>Seu estilo.<br/><em>Seu ritmo.</em></h2></div><Link href="/#colecao">EXPLORAR A LOJA <span>↗</span></Link></section>
     <footer className="oi-footer">
       <div className="oi-footer-top"><div><Link href="/" className="oi-footer-brand">ORVIAN<span>®</span></Link><p>Moda fitness feminina,<br/>no seu ritmo.</p></div>
-        <div><span>EXPLORE</span><Link href="/#colecao">Coleção</Link><Link href="/#novidades">Novidades</Link><Link href="/nossa-historia">Nossa história</Link><Link href="/blog">Blog / Trends</Link></div>
-        <div><span>ATENDIMENTO</span><Link href="/contato">Contato</Link><Link href="/entrega">Entrega</Link><Link href="/devolucao">Devolução</Link><Link href="/perguntas-frequentes">Perguntas frequentes</Link></div>
+        <div><span>EXPLORE</span><Link href="/colecoes">Coleções</Link><Link href="/novidades">Novidades</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog">Blog / Trends</Link></div>
+        <div><span>ATENDIMENTO</span><Link href="/contato">Fale conosco</Link><a href="mailto:useorvian@gmail.com?subject=Entrega%20e%20devolu%C3%A7%C3%A3o">Entrega e devolução</a><a href="mailto:useorvian@gmail.com?subject=D%C3%BAvidas%20ORVIAN">Perguntas frequentes</a></div>
         <div><span>REDES SOCIAIS</span><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer">Facebook ↗</a><a href="https://www.youtube.com/@UseOrvian" target="_blank" rel="noreferrer">YouTube ↗</a></div>
       </div><div className="oi-footer-bottom"><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>VISTA SUA MELHOR VERSÃO</span><Link href="/">VOLTAR AO INÍCIO ↑</Link></div>
     </footer>

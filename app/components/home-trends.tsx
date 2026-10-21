@@ -16,17 +16,25 @@ export default function HomeTrends() {
           .select("id,slug,title,excerpt,category,published_at,created_at")
           .eq("status", "published").order("published_at", { ascending: false }).limit(3);
         if (data) setPosts(data as Post[]);
-      } catch { /* A vitrine continua funcionando se a tabela ainda não foi criada. */ }
+      } catch { /* A vitrine continua funcionando se a tabela ainda não estiver disponível. */ }
     };
     void load();
   }, []);
 
-  return <section className="store-trends" id="orvian-trends">
-    <div className="store-section-heading"><div><p className="store-eyebrow">ORVIAN EDITORIAL</p><h2>Ideias que acompanham<br/><em>o seu movimento.</em></h2></div><p>Inspiração, estilo e conversas para a vida real.</p></div>
-    {posts.length ? <div className="store-trends-grid">{posts.map((post) => <article key={post.id} className="store-trends-card">
-      <div className="store-trends-art"><span>{post.category}</span><b>O.</b></div>
-      <div className="store-trends-copy"><small>{new Date(post.published_at ?? post.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}</small><h3>{post.title}</h3><p>{post.excerpt}</p><Link href={`/blog/${post.slug}`}>Ler matéria ↗</Link></div>
-    </article>)}</div> : <div className="store-trends-placeholder"><span>O.</span><div><strong>Novas ideias estão a caminho.</strong><p>Em breve, conteúdo sobre moda, fitness, bem-estar e estilo real.</p></div></div>}
-    <Link className="store-trends-all" href="/blog">Explorar Orvian Trends <span>↗</span></Link>
+  return <section className="orvian-home-trends" id="orvian-trends">
+    <div className="oht-heading"><div><p>06 / ORVIAN EDITORIAL</p><h2>Ideas to<br/><em>move you.</em></h2></div><div className="oht-heading-side"><span>ESTILO COM INTENÇÃO</span><p>Inspiração, estilo e conversas para a vida real.</p><Link href="/blog">VER TODO O ARQUIVO ↗</Link></div></div>
+    {posts.length ? <div className="oht-grid">{posts.map((post, index) => <article key={post.id} className="oht-card">
+      <div className={`oht-art oht-art-${index}`}><span>{post.category || "ORVIAN EDITORIAL"}</span><b>0{index + 1}</b><i>O.</i><small>THE EVERYDAY EDIT</small></div>
+      <div className="oht-copy"><small>{new Date(post.published_at ?? post.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}</small><h3>{post.title}</h3><p>{post.excerpt}</p><Link href={`/blog/${post.slug}`}>LER MATÉRIA <span>↗</span></Link></div>
+    </article>)}</div> : <div className="oht-empty"><span>O.</span><div><p>ORVIAN EDITORIAL / EM BREVE</p><strong>Novas ideias estão a caminho.</strong><span>Em breve, conteúdo sobre moda, fitness, bem-estar e estilo real.</span></div></div>}
+    <div className="oht-bottom"><span>STYLE WITH INTENTION · OWN YOUR PACE</span><Link href="/blog">EXPLORAR ORVIAN TRENDS <span>↗</span></Link></div>
+    <style>{`
+      .orvian-home-trends{background:#f7f5f2;color:#17151b;padding:clamp(55px,8vw,110px) clamp(20px,8vw,120px);font-family:Arial,Helvetica,sans-serif}.orvian-home-trends *{box-sizing:border-box}.orvian-home-trends a{color:inherit;text-decoration:none}
+      .oht-heading{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:40px}.oht-heading>div:first-child>p,.oht-heading-side>span,.oht-empty>div>p{font-size:9px;letter-spacing:.16em;font-weight:700;color:#7834b9}.oht-heading h2{font-size:clamp(43px,6vw,76px);line-height:.94;letter-spacing:-.065em;margin:18px 0 0}.oht-heading h2 em{font-family:Georgia,serif;font-weight:400;color:#8b35ed}.oht-heading-side{max-width:280px}.oht-heading-side>span{color:#837987}.oht-heading-side p{font-size:13px;line-height:1.7;color:#69616d}.oht-heading-side>a{display:inline-block;margin-top:8px;padding-bottom:8px;border-bottom:1px solid #b4a5bc;font-size:8px;letter-spacing:.12em}
+      .oht-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.oht-card{min-width:0}.oht-art{height:clamp(160px,20vw,250px);position:relative;overflow:hidden;padding:17px;display:flex;align-items:flex-start;justify-content:space-between;background:linear-gradient(135deg,#e5d6f1,#f4edf6 58%,#c1a5d9)}.oht-art-1{background:linear-gradient(135deg,#d7d1de,#f4edf4 55%,#bda5cc)}.oht-art-2{background:linear-gradient(135deg,#d7bfe8,#f5eaf6 60%,#b29ac8)}.oht-art>span{font-size:8px;letter-spacing:.12em;background:#f7f5f2;padding:7px}.oht-art>b{font-size:10px;letter-spacing:.1em}.oht-art>i{position:absolute;bottom:-35px;left:8px;font-size:clamp(115px,15vw,190px);font-weight:900;letter-spacing:-.13em;font-style:normal;color:#fff9}.oht-art>small{position:absolute;bottom:17px;right:17px;font-size:7px;letter-spacing:.12em}.oht-copy{padding:20px 0 10px}.oht-copy>small{font-size:10px;color:#8a818f}.oht-copy h3{font-size:clamp(18px,2vw,25px);line-height:1.2;letter-spacing:-.035em;margin:12px 0}.oht-copy>p{font-size:13px;line-height:1.7;color:#69616d}.oht-copy>a{display:inline-flex;gap:22px;margin-top:8px;padding-bottom:8px;border-bottom:1px solid #b4a5bc;font-size:8px;font-weight:700;letter-spacing:.12em}.oht-copy>a span,.oht-bottom>a span{font-size:14px;color:#8b35ed}
+      .oht-empty{display:flex;gap:25px;align-items:center;padding:28px;background:#fff;border:1px solid #e9e2eb}.oht-empty>span{font-size:60px;font-weight:900;letter-spacing:-.1em;color:#8b35ed}.oht-empty>div>p{margin:0 0 10px}.oht-empty>div>strong{display:block;font-size:23px}.oht-empty>div>span{display:block;margin-top:8px;font-size:13px;line-height:1.7;color:#69616d}.oht-bottom{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:38px;padding-top:18px;border-top:1px solid #e5dfe7}.oht-bottom>span{font-size:8px;letter-spacing:.13em;color:#827986}.oht-bottom>a{display:flex;align-items:center;gap:20px;font-size:8px;letter-spacing:.12em;font-weight:700}
+      @media(max-width:760px){.oht-heading{align-items:flex-start;flex-direction:column}.oht-heading-side{max-width:450px}.oht-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 18px}.oht-art{height:200px}}
+      @media(max-width:520px){.oht-grid{grid-template-columns:1fr}.oht-art{height:235px}.oht-bottom{align-items:flex-start;flex-direction:column}.oht-empty{align-items:flex-start;flex-direction:column}}
+    `}</style>
   </section>;
 }

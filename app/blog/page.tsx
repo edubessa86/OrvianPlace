@@ -18,7 +18,7 @@ async function getPosts(): Promise<EditorialPost[]> {
 }
 
 export const metadata = {
-  title: "Orvian Trends | Estilo, bem-estar e moda feminina",
+  title: "Inspiração ORVIAN | Estilo, bem-estar e moda feminina",
   description: "Inspiração sobre moda feminina, estilo, movimento e bem-estar no universo Orvian.",
 };
 
@@ -28,7 +28,7 @@ export default async function BlogPage() {
   const dateLabel = (post: EditorialPost) => new Date(post.published_at ?? post.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
   return (
     <main className="orvian-trends-page">
-      <div className="ot-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>EDITORIAL / 001</span></div>
+      <div className="ot-announcement"><span>ORVIAN</span><span>Moda fitness feminina, no seu ritmo.</span><span>EDITORIAL / 001</span></div>
       <header className="ot-header">
         <Link href="/" className="ot-wordmark" aria-label="ORVIAN início"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>MODA FITNESS FEMININA</small></Link>
         <nav className="ot-nav" aria-label="Navegação principal"><Link href="/colecoes">Coleções</Link><Link href="/novidades">Novidades</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog" aria-current="page">Blog</Link><Link href="/contato">Fale conosco</Link></nav>
@@ -36,7 +36,7 @@ export default async function BlogPage() {
       </header>
       <section className="ot-hero">
         <div className="ot-hero-copy"><p className="ot-kicker"><span>01</span> EDITORIAL ORVIAN — ESTILO COM INTENÇÃO</p><h1>Ideias para<br/><em>inspirar</em> você<span>.</span></h1><p className="ot-hero-description">Tendências, ideias e conversas que inspiram você a vestir sua melhor versão — dentro e fora do treino.</p><div className="ot-topics"><span>MODA</span><span>MOVIMENTO</span><span>BEM-ESTAR</span><span>ESTILO REAL</span></div></div>
-        <div className="ot-hero-art" aria-label="Arte editorial Orvian Trends"><div className="ot-art-orbit ot-art-orbit-one"></div><div className="ot-art-orbit ot-art-orbit-two"></div><div className="ot-art-word">TRENDS<span>®</span></div><div className="ot-art-index">VOL. 001<br/>EDIÇÃO PARA A VIDA REAL</div><div className="ot-art-vertical">INSPIRED BY REAL LIFE / 2026</div></div>
+        <div className="ot-hero-art" aria-label="Arte editorial Orvian Trends"><div className="ot-art-orbit ot-art-orbit-one"></div><div className="ot-art-orbit ot-art-orbit-two"></div><div className="ot-art-word">IDEIAS<span>®</span></div><div className="ot-art-index">EDIÇÃO 001<br/>EDIÇÃO PARA A VIDA REAL</div><div className="ot-art-vertical">INSPIRADO NA VIDA REAL / 2026</div></div>
       </section>
       <div className="ot-marquee"><div>ESTILO COM INTENÇÃO <i>✳</i> NO SEU RITMO <i>✳</i> INSPIRAÇÃO ORVIAN <i>✳</i> ESTILO COM INTENÇÃO <i>✳</i> NO SEU RITMO <i>✳</i></div></div>
       <section className="ot-archive">
@@ -47,7 +47,7 @@ export default async function BlogPage() {
         </> : <div className="ot-empty"><span>O.</span><div><p className="ot-label">EM BREVE / EDITORIAL ORVIAN</p><h3>Uma nova conversa começa em breve.</h3><p>Estamos preparando conteúdos sobre estilo, movimento, bem-estar e tendências para a vida real.</p><Link href="/">CONHEÇA A ORVIAN ↗</Link></div></div>}
       </section>
       <section className="ot-cta"><p className="ot-label">03 / CONTINUE DESCOBRINDO</p><h2>Seu estilo. Seu ritmo.<br/><em>Sua próxima versão.</em></h2><Link href="/colecoes">EXPLORAR ORVIAN <span>↗</span></Link><div className="ot-cta-watermark">O.</div></section>
-      <footer className="ot-footer"><Link href="/" className="ot-footer-brand">ORVIAN<span>®</span></Link><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>MODA FEMININA · VISTA SUA MELHOR VERSÃO</span><div><Link href="/essencia">NOSSA ESSÊNCIA</Link><Link href="/contato">CONTATO</Link></div><div><span>ATENDIMENTO</span><Link href="/contato">CONTATO</Link><Link href="/entrega">ENTREGA</Link><Link href="/devolucao">TROCAS & DEVOLUÇÕES</Link><Link href="/perguntas-frequentes">PERGUNTAS FREQUENTES</Link></div><div><Link href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">INSTAGRAM ↗</Link></div></footer>
+      <footer className="ot-footer"><Link href="/" className="ot-footer-brand">ORVIAN<span>®</span></Link><span>© {new Date().getFullYear()} ORVIAN</span><span>MODA FEMININA · VISTA SUA MELHOR VERSÃO</span><div><Link href="/essencia">NOSSA ESSÊNCIA</Link><Link href="/contato">CONTATO</Link></div><div><span>ATENDIMENTO</span><Link href="/contato">CONTATO</Link><Link href="/entrega">ENTREGA</Link><Link href="/devolucao">TROCAS E DEVOLUÇÕES</Link><Link href="/perguntas-frequentes">PERGUNTAS FREQUENTES</Link></div><div><Link href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">INSTAGRAM ↗</Link></div></footer>
       <style>{`
         .orvian-trends-page{--ot-ink:#28483a;--ot-paper:#faf9f6;--ot-purple:#28483a;min-height:100vh;background:var(--ot-paper);color:var(--ot-ink);font-family:'DM Sans',Arial,sans-serif;overflow:hidden}.orvian-trends-page *{box-sizing:border-box}.orvian-trends-page a{color:inherit;text-decoration:none}
         .ot-announcement{height:34px;background:#28483a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 6.2%;font-size:9px;letter-spacing:.12em;text-transform:uppercase}.ot-announcement span:first-child{font-weight:800}.ot-announcement span:nth-child(2){color:#d9e0da}

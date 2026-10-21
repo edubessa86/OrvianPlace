@@ -29,7 +29,7 @@ export default async function BlogPage() {
     <main className="orvian-trends-page">
       <div className="ot-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>EDITORIAL / 001</span></div>
       <header className="ot-header">
-        <nav className="ot-nav"><Link href="/#colecao">Coleção</Link><Link href="/#novidades">Novidades</Link><Link href="/#essencia">Manifesto</Link><Link href="/blog" aria-current="page">Trends</Link></nav>
+        <nav className="ot-nav"><Link href="/#colecao">Coleção</Link><Link href="/#novidades">Novidades</Link><Link href="/nossa-historia">Nossa história</Link><Link href="/blog" aria-current="page">Blog</Link><Link href="/contato">Contato</Link></nav>
         <Link href="/" className="ot-wordmark" aria-label="ORVIAN início">ORVIAN<span>®</span><small>ACTIVE / EVERYDAY</small></Link>
         <div className="ot-header-right"><span>ESTILO COM INTENÇÃO</span><Link href="/">VOLTAR À LOJA ↗</Link></div>
       </header>
@@ -46,7 +46,7 @@ export default async function BlogPage() {
         </> : <div className="ot-empty"><span>O.</span><div><p className="ot-label">EM BREVE / ORVIAN EDITORIAL</p><h3>Uma nova conversa começa em breve.</h3><p>Estamos preparando conteúdos sobre estilo, movimento, bem-estar e tendências para a vida real.</p><Link href="/">CONHEÇA A ORVIAN ↗</Link></div></div>}
       </section>
       <section className="ot-cta"><p className="ot-label">03 / CONTINUE EXPLORANDO</p><h2>Seu estilo. Seu ritmo.<br/><em>Sua próxima versão.</em></h2><Link href="/#colecao">EXPLORAR ORVIAN <span>↗</span></Link><div className="ot-cta-watermark">O.</div></section>
-      <footer className="ot-footer"><Link href="/" className="ot-footer-brand">ORVIAN<span>®</span></Link><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>MODA FEMININA · VISTA SUA MELHOR VERSÃO</span><div><Link href="/#essencia">NOSSA ESSÊNCIA</Link><Link href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">INSTAGRAM ↗</Link></div></footer>
+      <footer className="ot-footer"><Link href="/" className="ot-footer-brand">ORVIAN<span>®</span></Link><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>MODA FEMININA · VISTA SUA MELHOR VERSÃO</span><div><Link href="/nossa-historia">NOSSA HISTÓRIA</Link><Link href="/contato">CONTATO</Link><Link href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">INSTAGRAM ↗</Link></div></footer>
       <style>{`
         .orvian-trends-page{--ot-ink:#17151b;--ot-paper:#f7f5f2;--ot-purple:#8b35ed;min-height:100vh;background:var(--ot-paper);color:var(--ot-ink);font-family:Arial,Helvetica,sans-serif;overflow:hidden}.orvian-trends-page *{box-sizing:border-box}.orvian-trends-page a{color:inherit;text-decoration:none}
         .ot-announcement{height:30px;background:#17151b;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,64px);font-size:8px;letter-spacing:.15em}.ot-announcement span:first-child{font-weight:800}.ot-announcement span:nth-child(2){color:#c9c2ce}

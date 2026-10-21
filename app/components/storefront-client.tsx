@@ -32,8 +32,9 @@ export default function StorefrontClient() {
         <nav className={menuOpen ? "editorial-nav is-open" : "editorial-nav"}>
           <a href="#colecao" onClick={() => setMenuOpen(false)}>Coleção</a>
           <a href="#novidades" onClick={() => setMenuOpen(false)}>Novidades</a>
-          <a href="#essencia" onClick={() => setMenuOpen(false)}>Manifesto</a>
-          <Link href="/blog" onClick={() => setMenuOpen(false)}>Trends</Link>
+          <Link href="/nossa-historia" onClick={() => setMenuOpen(false)}>Nossa história</Link>
+          <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
+          <Link href="/contato" onClick={() => setMenuOpen(false)}>Contato</Link>
         </nav>
         <a className="editorial-wordmark" href="#" aria-label="ORVIAN início">ORVIAN<span>®</span><small>ACTIVE / EVERYDAY</small></a>
         <div className="editorial-actions">
@@ -82,7 +83,7 @@ export default function StorefrontClient() {
 
       <section className="editorial-newsletter"><div><p className="editorial-small-label">NOTAS DO UNIVERSO ORVIAN</p><h2>Be part<br/>of the <em>movement.</em></h2></div><div className="editorial-newsletter-right"><p>Novas ideias, inspirações e novidades da marca. Acompanhe nossa jornada e seja uma das primeiras a conhecer a coleção.</p><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer" className="editorial-text-link">Siga @_useorvian <Instagram size={16}/></a></div><span className="editorial-newsletter-mark">O.</span></section>
 
-      <footer className="editorial-footer"><div className="editorial-footer-top"><div><a className="editorial-footer-wordmark" href="#">ORVIAN<span>®</span></a><p>Moda fitness feminina,<br/>no seu ritmo.</p></div><div><span className="editorial-footer-label">EXPLORE</span><a href="#colecao">Coleções</a><a href="#novidades">Novidades</a><a href="#essencia">Nossa essência</a><Link href="/blog">Orvian Trends</Link></div><div><span className="editorial-footer-label">CONTATO</span><a href="mailto:useorvian@gmail.com">E-mail</a><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer">Facebook ↗</a></div><div className="editorial-footer-note"><span>VISTA SUA MELHOR VERSÃO.</span><p>Feita para a vida real.<br/>Inspirada em você.</p></div></div><div className="editorial-footer-bottom"><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>PRÉVIA VISUAL — NÃO PUBLICADA</span><a href="/painel">ACESSO ADMINISTRATIVO ↗</a></div></footer>
+      <footer className="editorial-footer"><div className="editorial-footer-top"><div><Link className="editorial-footer-wordmark" href="/">ORVIAN<span>®</span></Link><p>Moda fitness feminina,<br/>no seu ritmo.</p></div><div><span className="editorial-footer-label">EXPLORE</span><a href="#colecao">Coleções</a><a href="#novidades">Novidades</a><Link href="/nossa-historia">Nossa história</Link><Link href="/blog">Blog / Orvian Trends</Link></div><div><span className="editorial-footer-label">ATENDIMENTO</span><Link href="/contato">Contato</Link><Link href="/entrega">Entrega</Link><Link href="/devolucao">Trocas e devoluções</Link><Link href="/perguntas-frequentes">Perguntas frequentes</Link></div><div><span className="editorial-footer-label">REDES SOCIAIS</span><a href="mailto:useorvian@gmail.com">E-mail</a><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer">Facebook ↗</a><a href="https://www.youtube.com/@UseOrvian" target="_blank" rel="noreferrer">YouTube ↗</a></div><div className="editorial-footer-note"><span>VISTA SUA MELHOR VERSÃO.</span><p>Feita para a vida real.<br/>Inspirada em você.</p></div></div><div className="editorial-footer-bottom"><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>PRÉVIA VISUAL — NÃO PUBLICADA</span><Link href="/painel">ACESSO ADMINISTRATIVO ↗</Link></div></footer>
       {toast && <div className="editorial-toast" role="status">{toast}</div>}
     </main>
   );

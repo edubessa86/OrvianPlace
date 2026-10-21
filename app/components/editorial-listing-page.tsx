@@ -3,10 +3,10 @@ import Link from "next/link";
 type EditorialListingProps = { mode: "novidades" | "colecoes" };
 
 const looks = [
-  { title: "Legging Sculpt", label: "PERFORMANCE / 01", image: "https://images.unsplash.com/photo-1506629905607-d9d4e1c5a1f3?auto=format&fit=crop&w=1000&q=85", text: "Linhas que acompanham cada movimento." },
-  { title: "Top Aura", label: "ESSENTIALS / 02", image: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=1000&q=85", text: "Leveza e presença para a sua rotina." },
-  { title: "Conjunto Flow", label: "MOVEMENT / 03", image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1000&q=85", text: "Versatilidade para ir além do treino." },
-  { title: "Everyday Edit", label: "LIFESTYLE / 04", image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85", text: "Uma leitura contemporânea do vestir." },
+  { title: "Legging Escultural", label: "DESEMPENHO / 01", image: "https://images.unsplash.com/photo-1506629905607-d9d4e1c5a1f3?auto=format&fit=crop&w=1000&q=85", text: "Linhas que acompanham cada movimento." },
+  { title: "Top Aura", label: "ESSENCIAIS / 02", image: "https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=1000&q=85", text: "Leveza e presença para a sua rotina." },
+  { title: "Conjunto Fluidez", label: "MOVIMENTO / 03", image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1000&q=85", text: "Versatilidade para ir além do treino." },
+  { title: "Edição para a vida real", label: "ESTILO DE VIDA / 04", image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85", text: "Uma leitura contemporânea do vestir." },
 ];
 
 export default function EditorialListingPage({ mode }: EditorialListingProps) {
@@ -14,26 +14,26 @@ export default function EditorialListingPage({ mode }: EditorialListingProps) {
   const title = isNews ? "Novidades" : "Coleções";
   const intro = isNews
     ? "Novas ideias, referências e peças-conceito para inspirar o seu próximo movimento."
-    : "Explore o universo ORVIAN: performance, conforto e estilo pensados para acompanhar o seu ritmo.";
+    : "Explore o universo ORVIAN: desempenho, conforto e estilo pensados para acompanhar o seu ritmo.";
   return <main className="orvian-listing">
-    <div className="ol-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>VISTA SUA MELHOR VERSÃO</span></div>
+    <div className="ol-announcement"><span>ORVIAN</span><span>Moda fitness feminina, no seu ritmo.</span><span>VISTA SUA MELHOR VERSÃO</span></div>
     <header className="ol-header">
       <nav aria-label="Navegação principal"><Link href="/colecoes">Coleções</Link><Link href="/novidades">Novidades</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog">Blog</Link><Link href="/contato">Contato</Link></nav>
-      <Link href="/" className="ol-wordmark" aria-label="ORVIAN início">ORVIAN<small>ACTIVE / EVERYDAY</small></Link>
+      <Link href="/" className="ol-wordmark" aria-label="ORVIAN início">ORVIAN<small>MODA PARA A VIDA REAL</small></Link>
       <Link href="/contato" className="ol-contact">FALE CONOSCO ↗</Link>
     </header>
     <section className="ol-hero">
-      <p className="ol-kicker">ORVIAN STUDIO <span>✳</span> {isNews ? "THE LATEST EDIT" : "THE COLLECTIONS EDIT"}</p>
-      <h1>{isNews ? <>Fresh ideas.<br/><em>New movement.</em></> : <>Made to<br/><em>move with you.</em></>}</h1>
+      <p className="ol-kicker">ORVIAN <span>✳</span> {isNews ? "AS ÚLTIMAS NOVIDADES" : "COLEÇÕES ORVIAN"}</p>
+      <h1>{isNews ? <>Novas ideias.<br/><em>Novos movimentos.</em></> : <>Feita para<br/><em>acompanhar você.</em></>}</h1>
       <p className="ol-intro">{intro}</p>
       <span className="ol-hero-mark">O.</span>
     </section>
     <section className="ol-grid-section">
       <div className="ol-heading"><div><p className="ol-kicker">{isNews ? "01 / RECÉM-CHEGADOS AO UNIVERSO ORVIAN" : "01 / EXPLORE POR ESTILO"}</p><h2>{isNews ? <>Inspiração para<br/><em>o seu dia.</em></> : <>Encontre o seu<br/><em>movimento.</em></>}</h2></div><p>Uma prévia conceitual da identidade ORVIAN. Imagens, peças e valores ilustrativos — não representam produtos disponíveis para compra.</p></div>
-      <div className="ol-grid">{looks.map((look, i) => <article className="ol-card" key={look.title}><div className="ol-image"><img src={look.image} alt={look.title} loading="lazy"/><span>{look.label}</span><b>0{i + 1}</b></div><div className="ol-card-copy"><div><p>{isNews ? "ORVIAN NOTES" : i % 2 ? "EVERYDAY" : "PERFORMANCE"}</p><h3>{look.title}</h3><span>{look.text}</span></div><Link href={isNews ? "/blog" : "/novidades"} aria-label={isNews ? "Ler inspiração no blog" : "Ver novidades"}>↗</Link></div></article>)}</div>
+      <div className="ol-grid">{looks.map((look, i) => <article className="ol-card" key={look.title}><div className="ol-image"><img src={look.image} alt={look.title} loading="lazy"/><span>{look.label}</span><b>0{i + 1}</b></div><div className="ol-card-copy"><div><p>{isNews ? "NOTAS ORVIAN" : i % 2 ? "PARA TODOS OS DIAS" : "DESEMPENHO"}</p><h3>{look.title}</h3><span>{look.text}</span></div><Link href={isNews ? "/blog" : "/novidades"} aria-label={isNews ? "Ler inspiração no blog" : "Ver novidades"}>↗</Link></div></article>)}</div>
     </section>
-    <section className="ol-bottom-cta"><div><p className="ol-kicker">ORVIAN STUDIO / 2026</p><h2>Seu estilo.<br/><em>Seu ritmo.</em></h2></div><Link href={isNews ? "/colecoes" : "/novidades"}>{isNews ? "EXPLORAR COLEÇÕES" : "VER NOVIDADES"} <span>↗</span></Link></section>
-    <footer className="ol-footer"><div className="ol-footer-top"><div><Link href="/" className="ol-footer-brand">ORVIAN®</Link><p>Moda fitness feminina,<br/>no seu ritmo.</p></div><div><b>EXPLORE</b><Link href="/novidades">Novidades</Link><Link href="/colecoes">Coleções</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog">Blog</Link></div><div><b>ATENDIMENTO</b><Link href="/contato">Fale conosco</Link><a href="mailto:useorvian@gmail.com?subject=Entrega%20e%20devolu%C3%A7%C3%A3o">Entrega e devolução</a><a href="mailto:useorvian@gmail.com?subject=D%C3%BAvidas%20ORVIAN">Perguntas frequentes</a></div><div><b>REDES SOCIAIS</b><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer">Facebook ↗</a><a href="https://www.youtube.com/@UseOrvian" target="_blank" rel="noreferrer">YouTube ↗</a></div></div><div className="ol-footer-bottom"><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>PRÉVIA CONCEITUAL</span><Link href="/">VOLTAR AO INÍCIO ↑</Link></div></footer>
+    <section className="ol-bottom-cta"><div><p className="ol-kicker">ORVIAN / 2026</p><h2>Seu estilo.<br/><em>Seu ritmo.</em></h2></div><Link href={isNews ? "/colecoes" : "/novidades"}>{isNews ? "EXPLORAR COLEÇÕES" : "VER NOVIDADES"} <span>↗</span></Link></section>
+    <footer className="ol-footer"><div className="ol-footer-top"><div><Link href="/" className="ol-footer-brand">ORVIAN®</Link><p>Moda fitness feminina,<br/>no seu ritmo.</p></div><div><b>NAVEGUE</b><Link href="/novidades">Novidades</Link><Link href="/colecoes">Coleções</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog">Blog</Link></div><div><b>ATENDIMENTO</b><Link href="/contato">Fale conosco</Link><Link href="/entrega">Entrega</Link><Link href="/devolucao">Trocas e devoluções</Link><Link href="/perguntas-frequentes">Perguntas frequentes</Link></div><div><b>NOSSAS REDES</b><a href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://www.facebook.com/OrvianOficial" target="_blank" rel="noreferrer">Facebook ↗</a><a href="https://www.youtube.com/@UseOrvian" target="_blank" rel="noreferrer">YouTube ↗</a></div></div><div className="ol-footer-bottom"><span>© {new Date().getFullYear()} ORVIAN</span><span>PRÉVIA CONCEITUAL</span><Link href="/">VOLTAR AO INÍCIO ↑</Link></div></footer>
     <style>{`
       .orvian-listing{--forest:#28483a;--paper:#faf9f6;--sand:#a7835e;min-height:100vh;background:var(--paper);color:var(--forest);font-family:'DM Sans',Arial,sans-serif}.orvian-listing *{box-sizing:border-box}.orvian-listing a{color:inherit;text-decoration:none}
       .ol-announcement{min-height:34px;display:flex;justify-content:space-between;align-items:center;gap:15px;padding:8px 6%;background:var(--forest);color:#fff;font-size:8px;letter-spacing:.14em;text-transform:uppercase}.ol-announcement span:nth-child(2){color:#d9e0da}

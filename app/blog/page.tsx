@@ -31,7 +31,7 @@ export default async function BlogPage() {
       <div className="ot-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>EDITORIAL / 001</span></div>
       <header className="ot-header">
         <Link href="/" className="ot-wordmark" aria-label="ORVIAN início"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>MODA FITNESS FEMININA</small></Link>
-        <nav className="ot-nav" aria-label="Navegação principal"><Link href="/#colecao">Coleção</Link><Link href="/#novidades">Novidades</Link><Link href="/nossa-historia">Nossa história</Link><Link href="/blog" aria-current="page">Blog</Link><Link href="/contato">Contato</Link></nav>
+        <nav className="ot-nav" aria-label="Navegação principal"><Link href="/colecoes">Coleções</Link><Link href="/novidades">Novidades</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog" aria-current="page">Blog</Link><Link href="/contato">Contato</Link></nav>
         <div className="ot-header-right"><Link href="/#lista">ENTRE PARA A LISTA ↗</Link></div>
       </header>
       <section className="ot-hero">

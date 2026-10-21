@@ -19,7 +19,7 @@ async function getPost(slug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  return post ? { title: post.seo_title || post.title, description: post.seo_description || post.excerpt } : { title: "Artigo | Orvian Trends" };
+  return post ? { title: post.seo_title || post.title, description: post.seo_description || post.excerpt } : { title: "Matéria | Inspiração ORVIAN" };
 }
 
 export default async function EditorialArticle({ params }: { params: Promise<{ slug: string }> }) {
@@ -30,7 +30,7 @@ export default async function EditorialArticle({ params }: { params: Promise<{ s
   const date = new Date(post.published_at ?? post.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
   const sources = Array.isArray(post.source_urls) ? post.source_urls : [];
   return <main className="orvian-article-page">
-    <div className="oa-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>EDITORIAL / TENDÊNCIAS</span></div>
+    <div className="oa-announcement"><span>ORVIAN</span><span>Moda fitness feminina, no seu ritmo.</span><span>EDITORIAL / TENDÊNCIAS</span></div>
     <header className="oa-header">
       <Link href="/" className="oa-wordmark"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>MODA FITNESS FEMININA</small></Link>
       <nav aria-label="Navegação principal"><Link href="/colecoes">Coleções</Link><Link href="/novidades">Novidades</Link><Link href="/essencia">Nossa essência</Link><Link href="/blog">Blog</Link><Link href="/contato">Fale conosco</Link></nav>
@@ -42,7 +42,7 @@ export default async function EditorialArticle({ params }: { params: Promise<{ s
         <p className="oa-kicker"><span>ORVIAN EDITORIAL</span><i>✳</i>{post.category || "TENDÊNCIAS"}</p>
         <h1>{post.title}</h1>
         <p className="oa-excerpt">{post.excerpt}</p>
-        <div className="oa-byline"><span>ORVIAN STUDIO</span><span>{date}</span><span>LEITURA EDITORIAL</span></div>
+        <div className="oa-byline"><span>ORVIAN</span><span>{date}</span><span>LEITURA EDITORIAL</span></div>
       </header>
       <div className="oa-cover" role="img" aria-label={getEditorialImageAlt(post.title)} style={{ backgroundImage: `linear-gradient(0deg, rgba(25, 43, 34, .42), rgba(25, 43, 34, .02) 65%), url("${getEditorialImage(post.title, post.category)}")` }}><span className="oa-cover-category">{post.category || "ORVIAN TENDÊNCIAS"}</span><span className="oa-cover-mark">O.</span><span className="oa-cover-caption">ESTILO COM INTENÇÃO — EDIÇÃO PARA A VIDA REAL</span><span className="oa-cover-index">ORVIAN / 001</span></div>
       <div className="oa-body">
@@ -50,10 +50,10 @@ export default async function EditorialArticle({ params }: { params: Promise<{ s
         <div className="oa-prose">{paragraphs.map((paragraph: string, i: number) => <p key={i}>{paragraph}</p>)}</div>
       </div>
       {sources.length > 0 && <aside className="oa-sources"><p className="oa-kicker">LEITURAS COMPLEMENTARES</p><h2>Fontes & referências.</h2><ul>{sources.map((source: unknown, i: number) => { const item = typeof source === "string" ? { url: source, title: source } : source as { url?: string; title?: string }; return item.url && /^https?:\/\//.test(item.url) ? <li key={i}><a href={item.url} target="_blank" rel="noreferrer">{item.title || item.url}<span>↗</span></a></li> : null; })}</ul></aside>}
-      <div className="oa-article-end"><span>FIM DA MATÉRIA</span><span>✳</span><span>ORVIAN STUDIO</span></div>
+      <div className="oa-article-end"><span>FIM DA MATÉRIA</span><span>✳</span><span>ORVIAN</span></div>
     </article>
     <section className="oa-next"><div><p className="oa-kicker">CONTINUE DESCOBRINDO</p><h2>Mais ideias para<br/><em>inspirar você.</em></h2></div><Link href="/blog">VOLTAR AO ARQUIVO <span>↗</span></Link></section>
-    <footer className="oa-footer"><Link href="/" className="oa-footer-brand">ORVIAN<span>®</span></Link><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>MODA FEMININA · VISTA SUA MELHOR VERSÃO</span><div className="oa-footer-service"><span>ATENDIMENTO</span><Link href="/contato">CONTATO</Link><Link href="/entrega">ENTREGA</Link><Link href="/devolucao">TROCAS & DEVOLUÇÕES</Link><Link href="/perguntas-frequentes">PERGUNTAS FREQUENTES</Link></div><Link href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">INSTAGRAM ↗</Link></footer>
+    <footer className="oa-footer"><Link href="/" className="oa-footer-brand">ORVIAN<span>®</span></Link><span>© {new Date().getFullYear()} ORVIAN</span><span>MODA FEMININA · VISTA SUA MELHOR VERSÃO</span><div className="oa-footer-service"><span>ATENDIMENTO</span><Link href="/contato">CONTATO</Link><Link href="/entrega">ENTREGA</Link><Link href="/devolucao">TROCAS E DEVOLUÇÕES</Link><Link href="/perguntas-frequentes">PERGUNTAS FREQUENTES</Link></div><Link href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">INSTAGRAM ↗</Link></footer>
     <style>{`
       .orvian-article-page{--oa-ink:#28483a;--oa-paper:#faf9f6;--oa-purple:#28483a;min-height:100vh;background:var(--oa-paper);color:var(--oa-ink);font-family:'DM Sans',Arial,sans-serif}.orvian-article-page *{box-sizing:border-box}.orvian-article-page a{color:inherit;text-decoration:none}
       .oa-announcement{height:34px;background:#28483a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 6.2%;font-size:9px;letter-spacing:.12em;text-transform:uppercase}.oa-announcement span:first-child{font-weight:800}.oa-announcement span:nth-child(2){color:#d9e0da}

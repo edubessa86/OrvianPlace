@@ -22,8 +22,7 @@ async function getPosts(): Promise<EditorialPost[]> {
     .from("editorial_posts")
     .select("id,slug,title,excerpt,category,published_at,created_at")
     .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(24);
+    .order("published_at", { ascending: false });
   return (data ?? []) as EditorialPost[];
 }
 

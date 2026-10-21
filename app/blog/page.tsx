@@ -1,92 +1,68 @@
 import Link from "next/link";
+import { getEditorialImage, getEditorialImageAlt } from "./editorial-image";
 import { createClient } from "@supabase/supabase-js";
 
 export const revalidate = 300;
 
-type EditorialPost = {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  published_at: string | null;
-  created_at: string;
-};
+type EditorialPost = { id: string; slug: string; title: string; excerpt: string; category: string; published_at: string | null; created_at: string };
 
 async function getPosts(): Promise<EditorialPost[]> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return [];
   const supabase = createClient(url, key, { auth: { persistSession: false } });
-  const { data } = await supabase
-    .from("editorial_posts")
+  const { data } = await supabase.from("editorial_posts")
     .select("id,slug,title,excerpt,category,published_at,created_at")
-    .eq("status", "published")
-    .order("published_at", { ascending: false })
-    .limit(24);
+    .eq("status", "published").order("published_at", { ascending: false });
   return (data ?? []) as EditorialPost[];
 }
 
 export const metadata = {
   title: "Orvian Trends | Estilo, bem-estar e moda feminina",
-  description: "Inspiração diária sobre moda feminina, estilo, movimento e bem-estar no universo Orvian.",
+  description: "Inspiração sobre moda feminina, estilo, movimento e bem-estar no universo Orvian.",
 };
 
 export default async function BlogPage() {
   const posts = await getPosts();
+  const featured = posts[0];
+  const dateLabel = (post: EditorialPost) => new Date(post.published_at ?? post.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
   return (
-    <main className="trends-page">
-      <header className="trends-header">
-        <Link href="/" className="trends-brand">ORVIAN<span>✦</span></Link>
-        <Link href="/" className="trends-back">Voltar à loja ↗</Link>
+    <main className="orvian-trends-page">
+      <div className="ot-announcement"><span>ORVIAN STUDIO</span><span>Moda fitness feminina, no seu ritmo.</span><span>EDITORIAL / 001</span></div>
+      <header className="ot-header">
+        <Link href="/" className="ot-wordmark" aria-label="ORVIAN início"><img src="/orvian-logo.svg" alt="ORVIAN" /><small>MODA FITNESS FEMININA</small></Link>
+        <nav className="ot-nav" aria-label="Navegação principal"><Link href="/#colecao">Coleção</Link><Link href="/#novidades">Novidades</Link><Link href="/nossa-historia">Nossa história</Link><Link href="/blog" aria-current="page">Blog</Link><Link href="/contato">Contato</Link></nav>
+        <div className="ot-header-right"><Link href="/#lista">ENTRE PARA A LISTA ↗</Link></div>
       </header>
-      <section className="trends-hero">
-        <p className="trends-eyebrow">ORVIAN EDITORIAL · ESTILO COM INTENÇÃO</p>
-        <h1>Orvian <em>Trends.</em></h1>
-        <p>Ideias, tendências e conversas que inspiram mulheres a vestir sua melhor versão — todos os dias.</p>
-        <div className="trends-topics"><span>MODA</span><span>FITNESS</span><span>BEM-ESTAR</span><span>ESTILO REAL</span></div>
+      <section className="ot-hero">
+        <div className="ot-hero-copy"><p className="ot-kicker"><span>01</span> ORVIAN EDITORIAL — ESTILO COM INTENÇÃO</p><h1>Ideas to<br/><em>move</em> you<span>.</span></h1><p className="ot-hero-description">Tendências, ideias e conversas que inspiram você a vestir sua melhor versão — dentro e fora do treino.</p><div className="ot-topics"><span>MODA</span><span>MOVIMENTO</span><span>BEM-ESTAR</span><span>ESTILO REAL</span></div></div>
+        <div className="ot-hero-art" aria-label="Arte editorial Orvian Trends"><div className="ot-art-orbit ot-art-orbit-one"></div><div className="ot-art-orbit ot-art-orbit-two"></div><div className="ot-art-word">TRENDS<span>®</span></div><div className="ot-art-index">VOL. 001<br/>THE EVERYDAY EDIT</div><div className="ot-art-vertical">INSPIRED BY REAL LIFE / 2026</div></div>
       </section>
-      <section className="trends-content">
-        <div className="trends-section-title"><div><p>LEITURAS PARA VOCÊ</p><h2>Novidades & inspiração</h2></div><span>01 / EDITORIAL</span></div>
-        {posts.length ? (
-          <div className="trends-grid">
-            {posts.map((post) => (
-              <article className="trends-card" key={post.id}>
-                <div className="trends-card-art"><span>{post.category}</span><b>O.</b></div>
-                <div className="trends-card-body">
-                  <span className="trends-date">{new Date(post.published_at ?? post.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}</span>
-                  <h3>{post.title}</h3><p>{post.excerpt}</p>
-                  <Link href={`/blog/${post.slug}`}>Ler matéria <span>↗</span></Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className="trends-empty">
-            <span className="trends-empty-mark">O.</span>
-            <div><h3>Uma nova conversa começa em breve.</h3><p>Estamos preparando conteúdos sobre estilo, movimento, bem-estar e tendências para a vida real.</p></div>
-          </div>
-        )}
+      <div className="ot-marquee"><div>STYLE WITH INTENTION <i>✳</i> OWN YOUR PACE <i>✳</i> ORVIAN TRENDS <i>✳</i> STYLE WITH INTENTION <i>✳</i> OWN YOUR PACE <i>✳</i></div></div>
+      <section className="ot-archive">
+        <div className="ot-section-heading"><div><p className="ot-label">02 / O ARQUIVO</p><h2>Novidades &<br/><em>inspiração.</em></h2></div><div className="ot-archive-meta"><span>LEITURAS PARA VOCÊ</span><strong>{String(posts.length).padStart(2, "0")} <small>ARTIGOS</small></strong></div></div>
+        {posts.length ? <>
+          {featured && <article className="ot-featured"><div className="ot-featured-art" role="img" aria-label={getEditorialImageAlt(featured.title)} style={{ backgroundImage: `linear-gradient(0deg, rgba(25, 43, 34, .42), rgba(25, 43, 34, .02) 65%), url("${getEditorialImage(featured.title, featured.category)}")` }}><span className="ot-featured-tag">{featured.category || "ORVIAN EDITORIAL"}</span><span className="ot-featured-mark">O.</span><span className="ot-featured-caption">THE EVERYDAY EDIT — 001</span></div><div className="ot-featured-copy"><p className="ot-label">DESTAQUE / {dateLabel(featured)}</p><h3>{featured.title}</h3><p>{featured.excerpt}</p><Link href={`/blog/${featured.slug}`} className="ot-link-button">LER MATÉRIA <span>↗</span></Link></div></article>}
+          {posts.length > 1 && <div className="ot-grid">{posts.slice(1).map((post, index) => <article className="ot-card" key={post.id}><div className={`ot-card-art ot-card-art-${index % 4}`} role="img" aria-label={getEditorialImageAlt(post.title)} style={{ backgroundImage: `linear-gradient(0deg, rgba(25, 43, 34, .42), rgba(25, 43, 34, .02) 65%), url("${getEditorialImage(post.title, post.category)}")` }}><span>{post.category || "ORVIAN EDITORIAL"}</span><b>0{index + 2}</b><i>O.</i></div><div className="ot-card-copy"><p className="ot-date">{dateLabel(post)}</p><h3>{post.title}</h3><p>{post.excerpt}</p><Link href={`/blog/${post.slug}`}>LER MATÉRIA <span>↗</span></Link></div></article>)}</div>}
+        </> : <div className="ot-empty"><span>O.</span><div><p className="ot-label">EM BREVE / ORVIAN EDITORIAL</p><h3>Uma nova conversa começa em breve.</h3><p>Estamos preparando conteúdos sobre estilo, movimento, bem-estar e tendências para a vida real.</p><Link href="/">CONHEÇA A ORVIAN ↗</Link></div></div>}
       </section>
-      <section className="trends-cta"><p>VISTA SUA MELHOR VERSÃO</p><h2>Seu estilo. Seu ritmo.<br/><em>Sua próxima versão.</em></h2><Link href="/#colecao">Explorar Orvian ↗</Link></section>
-      <footer className="trends-footer"><span>© {new Date().getFullYear()} ORVIAN</span><span>MODA FEMININA · VISTA SUA MELHOR VERSÃO</span><Link href="/">useorvian.com.br</Link></footer>
+      <section className="ot-cta"><p className="ot-label">03 / CONTINUE EXPLORANDO</p><h2>Seu estilo. Seu ritmo.<br/><em>Sua próxima versão.</em></h2><Link href="/#colecao">EXPLORAR ORVIAN <span>↗</span></Link><div className="ot-cta-watermark">O.</div></section>
+      <footer className="ot-footer"><Link href="/" className="ot-footer-brand">ORVIAN<span>®</span></Link><span>© {new Date().getFullYear()} ORVIAN STUDIO</span><span>MODA FEMININA · VISTA SUA MELHOR VERSÃO</span><div><Link href="/nossa-historia">NOSSA HISTÓRIA</Link><Link href="/contato">CONTATO</Link></div><div><span>ATENDIMENTO</span><Link href="/contato">CONTATO</Link><Link href="/entrega">ENTREGA</Link><Link href="/devolucao">TROCAS & DEVOLUÇÕES</Link><Link href="/perguntas-frequentes">PERGUNTAS FREQUENTES</Link></div><div><Link href="https://www.instagram.com/_useorvian/" target="_blank" rel="noreferrer">INSTAGRAM ↗</Link></div></footer>
       <style>{`
-        .trends-page{min-height:100vh;background:#f7f5f2;color:#17151b;font-family:Arial,Helvetica,sans-serif}
-        .trends-header{height:76px;padding:0 clamp(20px,6vw,88px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e7e1e8}
-        .trends-brand{font-size:25px;letter-spacing:.19em;font-weight:900;color:#17151b;text-decoration:none}.trends-brand span{color:#8b35ed;margin-left:7px}
-        .trends-back{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#4d4654;text-decoration:none}
-        .trends-hero{padding:clamp(66px,10vw,135px) clamp(20px,10vw,150px) 70px;background:radial-gradient(ellipse at 78% 30%,#e9d7fb 0,transparent 38%),#f0ebf2}
-        .trends-eyebrow,.trends-section-title>div>p,.trends-cta>p{font-size:10px;font-weight:700;letter-spacing:.2em;color:#7834b9}
-        .trends-hero h1{font-size:clamp(54px,10vw,118px);letter-spacing:-.075em;line-height:.95;margin:22px 0}.trends-hero h1 em,.trends-cta h2 em{font-family:Georgia,serif;font-weight:400;color:#7d2cc5}
-        .trends-hero>p:not(.trends-eyebrow){max-width:570px;font-size:clamp(16px,2vw,20px);line-height:1.7;color:#5d5663}
-        .trends-topics{display:flex;flex-wrap:wrap;gap:9px;margin-top:30px}.trends-topics span{border:1px solid #d3c6dc;border-radius:40px;padding:10px 14px;font-size:9px;letter-spacing:.12em}
-        .trends-content{padding:80px clamp(20px,8vw,120px) 100px}.trends-section-title{display:flex;justify-content:space-between;align-items:end;margin-bottom:32px;gap:20px}.trends-section-title h2{font-size:clamp(28px,4vw,44px);letter-spacing:-.04em;margin:10px 0}.trends-section-title>span{font-size:10px;color:#837987;letter-spacing:.1em}
-        .trends-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.trends-card{background:white;border:1px solid #eee8f0}.trends-card-art{height:170px;background:linear-gradient(135deg,#ded0ed,#f4e9f0 60%,#c9a9ed);display:flex;justify-content:space-between;align-items:start;padding:18px}.trends-card-art span{font-size:10px;letter-spacing:.12em;text-transform:uppercase}.trends-card-art b{font-size:62px;line-height:.8;color:#7d2cc5;opacity:.8}
-        .trends-card-body{padding:24px}.trends-date{font-size:11px;color:#8a818f}.trends-card h3{font-size:22px;line-height:1.2;margin:14px 0}.trends-card p{font-size:14px;line-height:1.7;color:#69616d}.trends-card-body>a{display:inline-flex;gap:20px;margin-top:12px;color:#762cb7;font-size:12px;font-weight:700;text-decoration:none}
-        .trends-empty{padding:34px;display:flex;gap:24px;align-items:center;background:white;border:1px solid #eee8f0}.trends-empty-mark{font-size:56px;font-weight:900;color:#8b35ed}.trends-empty h3{font-size:22px;margin:0 0 8px}.trends-empty p{margin:0;color:#716978;line-height:1.7}
-        .trends-cta{padding:80px 20px;text-align:center;background:#19151f;color:white}.trends-cta>p{color:#c79aff}.trends-cta h2{font-size:clamp(34px,6vw,66px);line-height:1.08;letter-spacing:-.04em}.trends-cta a{display:inline-block;margin-top:14px;padding:15px 22px;background:#a44cf0;color:white;text-decoration:none;font-size:12px;font-weight:700}
-        .trends-footer{padding:25px clamp(20px,6vw,88px);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:10px;letter-spacing:.12em;color:#766e7a}.trends-footer a{color:inherit;text-decoration:none}
-        @media(max-width:760px){.trends-grid{grid-template-columns:1fr}.trends-card-art{height:135px}.trends-section-title{align-items:start;flex-direction:column}.trends-empty{align-items:start;flex-direction:column}.trends-footer{flex-direction:column}}
+        .orvian-trends-page{--ot-ink:#28483a;--ot-paper:#faf9f6;--ot-purple:#28483a;min-height:100vh;background:var(--ot-paper);color:var(--ot-ink);font-family:'DM Sans',Arial,sans-serif;overflow:hidden}.orvian-trends-page *{box-sizing:border-box}.orvian-trends-page a{color:inherit;text-decoration:none}
+        .ot-announcement{height:34px;background:#28483a;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 6.2%;font-size:9px;letter-spacing:.12em;text-transform:uppercase}.ot-announcement span:first-child{font-weight:800}.ot-announcement span:nth-child(2){color:#d9e0da}
+        .ot-header{min-height:91px;padding:18px 6.2%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid #e9e6df;gap:clamp(18px,3vw,42px);background:#faf9f6}.ot-nav{display:flex;justify-content:flex-start;gap:clamp(12px,1.5vw,24px)}.ot-nav a,.ot-header-right{font-size:10px;letter-spacing:.08em;text-transform:uppercase}.ot-nav a{color:#414840}.ot-nav a[aria-current=page]{color:var(--ot-purple)}.ot-wordmark{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:27px;font-weight:900;letter-spacing:.15em;text-align:left;white-space:nowrap}.ot-wordmark img{display:block;width:145px;max-height:34px;object-fit:contain;object-position:left center}.ot-wordmark small{display:block;font-size:8px;letter-spacing:1.6px;font-weight:500;color:#85877f}.ot-header-right{display:flex;justify-content:flex-end;align-items:center;gap:24px}.ot-header-right>span{color:#85877f;font-size:8px}
+        .ot-hero{min-height:520px;display:grid;grid-template-columns:1fr .92fr;padding:clamp(48px,7vw,104px) clamp(20px,8vw,120px) 76px;gap:5vw;background:#faf9f6}.ot-hero-copy{align-self:center;position:relative;z-index:2}.ot-kicker,.ot-label{font-size:9px;letter-spacing:.18em;font-weight:700;color:#647467}.ot-kicker span{display:inline-block;margin-right:16px;color:#a19aa4}.ot-hero h1{font-family:'Manrope','DM Sans',sans-serif;font-size:clamp(62px,9vw,132px);letter-spacing:-.085em;line-height:.82;margin:36px 0 28px;font-weight:800}.ot-hero h1 em,.ot-section-heading h2 em,.ot-cta h2 em{font-family:Georgia,serif;font-weight:400;color:var(--ot-purple)}.ot-hero h1>span{color:var(--ot-purple)}.ot-hero-description{max-width:470px;font-size:15px;line-height:1.8;color:#625b67}.ot-topics{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px}.ot-topics span{font-size:8px;letter-spacing:.1em;padding:9px 12px;border:1px solid #d9cedf;border-radius:2px}
+        .ot-hero-art{min-height:330px;position:relative;overflow:hidden;background:linear-gradient(145deg,#dce4dc 0%,#f1f0e9 42%,#b7c5b7 100%);align-self:stretch;display:flex;align-items:center;justify-content:center}.ot-art-orbit{position:absolute;border:1px solid #fff9;border-radius:50%;aspect-ratio:1}.ot-art-orbit-one{width:88%;left:6%;top:4%}.ot-art-orbit-two{width:65%;left:17.5%;top:15.5%}.ot-art-word{font-size:clamp(35px,5vw,76px);font-weight:900;letter-spacing:-.08em;z-index:1}.ot-art-word span{font-size:11px;vertical-align:top;letter-spacing:0}.ot-art-index{position:absolute;bottom:22px;left:22px;font-size:8px;line-height:1.8;letter-spacing:.13em}.ot-art-vertical{position:absolute;right:16px;top:22px;writing-mode:vertical-rl;font-size:7px;letter-spacing:.17em}
+        .ot-marquee{overflow:hidden;background:#28483a;color:#fff;padding:15px 0;white-space:nowrap}.ot-marquee>div{font-size:10px;letter-spacing:.2em;word-spacing:9px}.ot-marquee i{color:#d4c5a9;font-style:normal;margin:0 18px}
+        .ot-archive{padding:clamp(55px,8vw,110px) clamp(20px,8vw,120px) 115px}.ot-section-heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:42px;gap:20px}.ot-section-heading h2{font-family:'Manrope','DM Sans',sans-serif;font-size:clamp(42px,6vw,76px);line-height:.98;letter-spacing:-.065em;margin:16px 0 0}.ot-archive-meta{display:flex;flex-direction:column;align-items:flex-end;gap:12px}.ot-archive-meta>span{font-size:8px;letter-spacing:.14em;color:#85877f}.ot-archive-meta strong{font-size:30px;letter-spacing:-.06em}.ot-archive-meta small{font-size:8px;letter-spacing:.12em;font-weight:400;color:#827986}
+        .ot-featured{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(25px,5vw,70px);align-items:center;margin-bottom:54px;padding-bottom:54px;border-bottom:1px solid #e9e6df}.ot-featured-art{min-height:310px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background-color:#dfe5dd;background-size:cover;background-position:center}.ot-featured-art:before,.ot-featured-art:after{content:"";position:absolute;width:78%;aspect-ratio:1;border:1px solid #fff9;border-radius:50%}.ot-featured-art:after{width:55%}.ot-featured-tag,.ot-featured-caption{position:absolute;left:20px;font-size:8px;letter-spacing:.13em}.ot-featured-tag{top:20px;background:#faf9f6;padding:9px 10px}.ot-featured-caption{bottom:20px;color:#51445b}.ot-featured-mark{font-size:clamp(75px,10vw,145px);font-weight:900;letter-spacing:-.1em;z-index:1;color:#28483a}.ot-featured-copy h3{font-size:clamp(28px,3.5vw,46px);line-height:1.05;letter-spacing:-.045em;margin:18px 0}.ot-featured-copy>p:not(.ot-label){font-size:14px;line-height:1.8;color:#69616d;max-width:500px}.ot-link-button{display:inline-flex;align-items:center;gap:30px;margin-top:16px;padding:14px 17px;background:#28483a;color:#fff!important;font-size:9px;letter-spacing:.1em}.ot-link-button span{color:#d4c5a9;font-size:16px}
+        .ot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px}.ot-card{min-width:0}.ot-card-art{height:190px;padding:17px;position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:flex-start;background:linear-gradient(135deg,#e5d6f1,#f4edf6 58%,#c1a5d9)}.ot-card-art-1{background:linear-gradient(135deg,#d7d1de,#f4edf4 55%,#bda5cc)}.ot-card-art-2{background:linear-gradient(135deg,#d7bfe8,#f5eaf6 60%,#b29ac8)}.ot-card-art-3{background:linear-gradient(135deg,#ded5e3,#f7f1f5 60%,#bca4c9)}.ot-card-art>span{font-size:8px;letter-spacing:.12em;background:#faf9f6;padding:7px}.ot-card-art>b{font-size:10px;letter-spacing:.1em}.ot-card-art>i{position:absolute;bottom:-30px;left:10px;font-size:150px;font-weight:900;letter-spacing:-.12em;font-style:normal;color:#fff9}.ot-card-copy{padding:20px 0 24px}.ot-date{font-size:10px;color:#8a818f}.ot-card-copy h3{font-size:22px;line-height:1.18;letter-spacing:-.035em;margin:12px 0}.ot-card-copy>p:not(.ot-date){font-size:13px;line-height:1.7;color:#69616d}.ot-card-copy>a{display:inline-flex;gap:24px;margin-top:8px;font-size:9px;font-weight:700;letter-spacing:.1em;border-bottom:1px solid #a9a0ac;padding-bottom:8px}.ot-card-copy>a span{color:var(--ot-purple);font-size:14px}
+        .ot-empty{display:flex;align-items:center;gap:32px;padding:38px;background:#fff;border:1px solid #e9e2eb}.ot-empty>span{font-size:65px;font-weight:900;letter-spacing:-.1em;color:var(--ot-purple)}.ot-empty h3{font-size:25px;margin:10px 0}.ot-empty p:not(.ot-label){max-width:600px;font-size:14px;line-height:1.8;color:#69616d}.ot-empty a{display:inline-block;margin-top:12px;font-size:9px;letter-spacing:.1em;border-bottom:1px solid #b7a7c1;padding-bottom:8px}
+        .ot-cta{position:relative;overflow:hidden;padding:clamp(60px,9vw,115px) 20px;text-align:center;background:#28483a;color:#fff}.ot-cta .ot-label{color:#c69af5}.ot-cta h2{font-size:clamp(36px,6vw,76px);line-height:1.04;letter-spacing:-.055em;margin:22px 0 30px;position:relative;z-index:1}.ot-cta>a{display:inline-flex;gap:28px;align-items:center;background:var(--ot-purple);padding:15px 18px;font-size:9px;letter-spacing:.1em;position:relative;z-index:1}.ot-cta>a span{font-size:15px}.ot-cta-watermark{position:absolute;right:4%;bottom:-100px;font-size:clamp(200px,35vw,440px);font-weight:900;letter-spacing:-.13em;color:#ffffff08}
+        .ot-footer{padding:27px clamp(20px,5vw,76px);display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border-top:1px solid #e4dde7;font-size:8px;letter-spacing:.12em;color:#77707c}.ot-footer-brand{font-size:20px;font-weight:900;letter-spacing:.15em;color:#28483a!important}.ot-footer>div{display:flex;gap:18px}.ot-footer a:not(.ot-footer-brand){color:inherit}
+        @media(max-width:850px){.ot-header{grid-template-columns:1fr auto}.ot-nav{grid-column:1/-1;grid-row:2;justify-content:center;order:3;padding-bottom:13px}.ot-header{height:auto;padding-top:17px;grid-template-columns:1fr auto}.ot-wordmark{grid-column:1;grid-row:1;text-align:left}.ot-header-right{grid-column:2;grid-row:1}.ot-header-right>span{display:none}.ot-hero{grid-template-columns:1fr;gap:35px;padding-top:60px}.ot-hero-art{min-height:300px}.ot-featured{grid-template-columns:1fr}.ot-featured-art{min-height:260px}.ot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:560px){.ot-announcement span:nth-child(2){display:none}.ot-header{padding:16px 18px;grid-template-columns:1fr auto}.ot-wordmark img{width:125px}.ot-nav{grid-column:1/-1;grid-row:2;gap:18px;justify-content:flex-start;overflow:auto}.ot-nav a{white-space:nowrap;font-size:9px}.ot-header-right a{font-size:8px}.ot-hero{padding:48px 20px 45px}.ot-hero h1{font-family:'Manrope','DM Sans',sans-serif;font-size:clamp(61px,17vw,90px)}.ot-hero-art{min-height:245px}.ot-archive{padding:58px 20px 70px}.ot-section-heading{align-items:flex-start}.ot-archive-meta{padding-top:6px}.ot-archive-meta>span{max-width:90px;text-align:right;line-height:1.5}.ot-archive-meta strong{font-size:24px}.ot-grid{grid-template-columns:1fr;gap:8px}.ot-card-art{height:200px}.ot-empty{align-items:flex-start;flex-direction:column;padding:25px;gap:15px}.ot-footer{align-items:flex-start;flex-direction:column}.ot-footer>div{flex-wrap:wrap}}
       `}</style>
     </main>
   );

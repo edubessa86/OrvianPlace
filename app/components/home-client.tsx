@@ -7,6 +7,7 @@ import CatalogModule from "@/app/components/catalog-module";
 import PricingModule from "@/app/components/pricing-module";
 import ImportModule from "@/app/components/import-module";
 import InsightsModule from "@/app/components/insights-module";
+import AuditModule from "@/app/components/audit-module";
 import {
   Activity, ArrowDownRight, ArrowUpRight, Boxes, ChartNoAxesCombined,
   ChevronDown, CircleHelp, CloudUpload, ExternalLink, Filter, LayoutDashboard,
@@ -163,7 +164,7 @@ export default function Home() {
 
   const nav = [
     { title: "WORKSPACE", items: [{ name: "Visão geral", icon: LayoutDashboard }, { name: "Garimpo de produtos", icon: PackageSearch }, { name: "Catálogo", icon: Boxes }, { name: "Fornecedores", icon: Truck }] },
-    { title: "INTELIGÊNCIA", items: [{ name: "Precificação", icon: Tags }, { name: "Canais de venda", icon: Store }, { name: "Análises", icon: ChartNoAxesCombined }] }
+    { title: "INTELIGÊNCIA", items: [{ name: "Precificação", icon: Tags }, { name: "Canais de venda", icon: Store }, { name: "Análises", icon: ChartNoAxesCombined }, { name: "Auditoria", icon: ShieldCheck }] }
   ];
 
   return (
@@ -182,7 +183,7 @@ export default function Home() {
         <header className="topbar"><div className="breadcrumbs">OrvianPlace <span>/</span> <strong>{active}</strong></div><div className="top-actions"><span className="env-pill"><span/> AMBIENTE DE DESENVOLVIMENTO</span><button className="icon-button" aria-label="Ajuda" onClick={() => setNotice("Ambiente administrativo protegido. Catálogo e fornecedores usam Supabase; importações, imagens e regras de canal possuem módulos próprios.")}><CircleHelp size={18}/></button><form action="/auth/signout" method="post"><button className="signout-button" type="submit"><LogOut size={15}/> Sair</button></form><div className="top-avatar">A</div></div></header>
         <div className="content">
           {notice && <div className="notice"><Activity size={17}/><span>{notice}</span><button aria-label="Fechar aviso" onClick={() => setNotice("")}><X size={16}/></button></div>}
-          {active === "Fornecedores" ? <SuppliersModule onChanged={loadSupplierCount} /> : active === "Catálogo" ? <CatalogModule /> : active === "Garimpo de produtos" ? <ImportModule /> : active === "Precificação" ? <PricingModule /> : active === "Canais de venda" ? <PricingModule mode="channels" /> : active === "Análises" ? <InsightsModule /> : <>
+          {active === "Fornecedores" ? <SuppliersModule onChanged={loadSupplierCount} /> : active === "Catálogo" ? <CatalogModule /> : active === "Garimpo de produtos" ? <ImportModule /> : active === "Precificação" ? <PricingModule /> : active === "Canais de venda" ? <PricingModule mode="channels" /> : active === "Análises" ? <InsightsModule /> : active === "Auditoria" ? <AuditModule /> : <>
           <div className="page-heading"><div><div className="eyebrow">TERÇA-FEIRA · CENTRAL DE OPERAÇÕES</div><h1>{active === "Visão geral" ? "Sua operação, em um só lugar." : active}</h1><p>Encontre oportunidades, organize seu catálogo e acompanhe a rentabilidade da ORVIAN.</p></div><button className="primary-button" onClick={() => setShowAdd(true)}><Plus size={17}/> Adicionar produto</button></div>
 
           <section className="welcome-banner"><div className="banner-content"><div className="banner-tag"><TrendingUp size={14}/> ORVIAN COMMERCE INTELLIGENCE</div><h2>Boas escolhas começam<br/>com dados melhores.</h2><p>Seu centro de inteligência para garimpar moda fitness, comparar fornecedores nacionais e tomar decisões com margem em mente.</p><button onClick={() => setActive("Garimpo de produtos")}>Explorar garimpo <span>↗</span></button></div><div className="banner-art" aria-hidden="true"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="art-core"><ShoppingBag size={42} strokeWidth={1.2}/></div><div className="float-card float-card-one"><span className="float-icon"><Wallet size={16}/></span><div><small>MARGEM POTENCIAL</small><strong>+32,8%</strong></div><ArrowUpRight size={17}/></div><div className="float-card float-card-two"><span className="float-icon"><Boxes size={16}/></span><div><small>CATÁLOGO</small><strong>Novas oportunidades</strong></div></div><div className="art-dot dot-one"/><div className="art-dot dot-two"/></div></section>
